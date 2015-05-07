@@ -29,19 +29,19 @@ static Pos_Invaders + #0, #83
 static Pos_Invaders + #5, #236
 static Pos_Invaders + #1, #573
 static Pos_Invaders + #11, #558
-static Pos_Invaders + #3, #147
 static Pos_Invaders + #4, #234
+static Pos_Invaders + #3, #147
 static Pos_Invaders + #6, #327
-static Pos_Invaders + #7, #329
-static Pos_Invaders + #8, #461
 static Pos_Invaders + #19, #903
+static Pos_Invaders + #8, #461
+static Pos_Invaders + #7, #329
 static Pos_Invaders + #10, #556
-static Pos_Invaders + #16, #805
 static Pos_Invaders + #12, #85
-static Pos_Invaders + #14, #749
-static Pos_Invaders + #2, #145
+static Pos_Invaders + #16, #805
 static Pos_Invaders + #15, #751
+static Pos_Invaders + #14, #749
 static Pos_Invaders + #13, #575
+static Pos_Invaders + #2, #145
 static Pos_Invaders + #17, #807
 static Pos_Invaders + #18, #901
 static Pos_Invaders + #9, #463
@@ -76,6 +76,8 @@ main:
 		call NovaPosicao
 
 		call PrintPersonagem
+
+		call AtualizaInvaders
 
 		;call Delay
 
@@ -158,6 +160,54 @@ FimPrintInvaders:
 	pop r1
 	pop r0
 	rts
+
+;#################################################
+
+AtualizaInvaders:
+	
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+
+	loadn r0, #Pos_Invaders
+	load r1, Invader
+	loadn r2, #' '
+	loadn r3, #10
+	loadn r4, #0
+
+	LoopAtualizaInvaders:
+		cmp r3, r4
+		jeq FimAtualizaInvaders
+		loadi r5, r0
+		outchar r2, r5
+		inc r0
+		loadi r6, r0
+		outchar r2, r6
+		dec r5
+		inc r6
+		storei r0, r5
+		dec r0
+		storei r0, r6
+		outchar r1, r5
+		outchar r1, r6
+		inc r0
+		inc r4
+		jmp LoopAtualizaInvaders
+
+	FimAtualizaInvaders:
+
+		pop r6
+		pop r5
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+		rts
 
 
 ;#################################################

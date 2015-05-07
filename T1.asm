@@ -25,11 +25,34 @@ static rand_StonePos + #7, #750
 static rand_StonePos + #8, #806
 static rand_StonePos + #9, #902
 
+static Pos_Invaders + #0, #83
+static Pos_Invaders + #5, #236
+static Pos_Invaders + #1, #573
+static Pos_Invaders + #11, #558
+static Pos_Invaders + #3, #147
+static Pos_Invaders + #4, #234
+static Pos_Invaders + #6, #327
+static Pos_Invaders + #7, #329
+static Pos_Invaders + #8, #461
+static Pos_Invaders + #19, #903
+static Pos_Invaders + #10, #556
+static Pos_Invaders + #16, #805
+static Pos_Invaders + #12, #85
+static Pos_Invaders + #14, #749
+static Pos_Invaders + #2, #145
+static Pos_Invaders + #15, #751
+static Pos_Invaders + #13, #575
+static Pos_Invaders + #17, #807
+static Pos_Invaders + #18, #901
+static Pos_Invaders + #9, #463
+
+
 ;------------- inicio --------------
 
 main:
 
-	call PrintStonesAndInvaders
+	call PrintStones
+	call PrintInvaders
 	loadn r0, #1140
 	load r1, Carachter
 	outchar r1, r0
@@ -60,9 +83,7 @@ main:
 	
 	halt
 
-	halt
-
-PrintStonesAndInvaders:
+PrintStones:
 
 	push r0
 	push r1
@@ -70,19 +91,17 @@ PrintStonesAndInvaders:
 	push r3
 	push r4
 	push r5
-	push r6
-	push r7
+
 
 	loadn r0, #rand_StonePos
 	loadn r1, #10 	; numero de pedras na tela
 	loadn r2, #0	; contador
 	loadn r5, #39
-	loadn r6, #Pos_Invaders
 
-	For_PrintStonesAndInvaders: 
+	For_PrintStones: 
 
 		cmp r2, r1
-		jeq Fim_PrintStonesAndInvaders
+		jeq Fim_PrintStones
 		loadi r3, r0
 		;Imprime a primeira pos da pedra
 		load r4, Stone
@@ -96,11 +115,9 @@ PrintStonesAndInvaders:
 		outchar r4, r3
 		inc r0
 		inc r2
-		jmp For_PrintStonesAndInvaders
+		jmp For_PrintStones
 
-		Fim_PrintStonesAndInvaders:
-			pop r7
-			pop r6
+		Fim_PrintStones:
 			pop r5
 			pop r4
 			pop r3
@@ -110,6 +127,39 @@ PrintStonesAndInvaders:
 			rts
 
 	
+;#################################################
+PrintInvaders:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+
+	loadn r0, #Pos_Invaders
+	load r1, Invader
+	loadn r2, #20
+	loadn r3, #0
+
+	LoopPrintInvaders:
+
+		cmp r3, r2
+		jeq FimPrintInvaders
+		loadi r4, r0
+		outchar r1, r4
+		inc r0
+		inc r3
+		jmp LoopPrintInvaders
+
+FimPrintInvaders:
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+
 ;#################################################
 		
 PrintPersonagem:

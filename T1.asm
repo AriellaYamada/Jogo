@@ -26,25 +26,25 @@ static rand_StonePos + #8, #806
 static rand_StonePos + #9, #902
 
 static Pos_Invaders + #0, #83
-static Pos_Invaders + #5, #236
-static Pos_Invaders + #1, #573
-static Pos_Invaders + #11, #558
+static Pos_Invaders + #1, #236
+static Pos_Invaders + #2, #573
+static Pos_Invaders + #3, #558
 static Pos_Invaders + #4, #234
-static Pos_Invaders + #3, #147
+static Pos_Invaders + #5, #147
 static Pos_Invaders + #6, #327
-static Pos_Invaders + #19, #903
+static Pos_Invaders + #7, #903
 static Pos_Invaders + #8, #461
-static Pos_Invaders + #7, #329
+static Pos_Invaders + #9, #329
 static Pos_Invaders + #10, #556
-static Pos_Invaders + #12, #85
-static Pos_Invaders + #16, #805
-static Pos_Invaders + #15, #751
+static Pos_Invaders + #11, #85
+static Pos_Invaders + #12, #805
+static Pos_Invaders + #13, #751
 static Pos_Invaders + #14, #749
-static Pos_Invaders + #13, #575
-static Pos_Invaders + #2, #145
+static Pos_Invaders + #15, #575
+static Pos_Invaders + #16, #145
 static Pos_Invaders + #17, #807
 static Pos_Invaders + #18, #901
-static Pos_Invaders + #9, #463
+static Pos_Invaders + #19, #463
 
 
 ;------------- inicio --------------
@@ -189,9 +189,9 @@ AtualizaInvaders:
 		outchar r2, r6
 		dec r5
 		inc r6
-		storei r0, r5
-		dec r0
-		storei r0, r6
+		;storei r0, r5
+		;dec r0
+		;storei r0, r6
 		outchar r1, r5
 		outchar r1, r6
 		inc r0

@@ -79,7 +79,7 @@ main:
 
 		call AtualizaInvaders
 
-		;call Delay
+		call Delay
 
 		jmp Loop
 	
@@ -184,16 +184,17 @@ AtualizaInvaders:
 		jeq FimAtualizaInvaders
 		loadi r5, r0
 		outchar r2, r5
+		dec r5
+		outchar r1, r5
+		
+		storei r0, r5
 		inc r0
 		loadi r6, r0
 		outchar r2, r6
-		dec r5
 		inc r6
-		;storei r0, r5
-		;dec r0
-		;storei r0, r6
-		outchar r1, r5
 		outchar r1, r6
+		
+		storei r0, r6
 		inc r0
 		inc r4
 		jmp LoopAtualizaInvaders
@@ -279,6 +280,8 @@ NovaPosicao:
 	push r5
 
 	load r0, Tecla
+	loadn r4, #1119
+	loadn r5, #1160
 
 	loadn r1, #'d'
 	cmp r0, r1
@@ -288,19 +291,19 @@ NovaPosicao:
 	cmp r0, r1
 	jeq MoveLeft
 
-	loadn r4, #1119
-	loadn r5, #1160
-
+	
+	jmp Fim
 
 	MoveRIGHT:
 
 		loadn r0, #1
-		load r1, PosAnterior
+;		load r1, PosAnterior
 		load r2, PosNova
 
-		;add r2, r1 , r0
-		;cmp r2, r5
-		;jeq MoveBeginLine
+;		add r2, r1 , r0
+		inc r2
+		cmp r2, r5
+		jeq MoveBeginLine
 
 		store PosNova, r2
 
@@ -314,12 +317,13 @@ NovaPosicao:
 	MoveLeft:
 
 		loadn r0, #1
-		load r1, PosAnterior
+		;load r1, PosAnterior
 		load r2, PosNova
 
 		;sub r2, r1, r0
-		;cmp r2, r4
-		;jeg MoveEndLine
+		dec r2
+		cmp r2, r4
+		jeg MoveEndLine
 
 		store PosNova, r2
 
@@ -341,5 +345,23 @@ NovaPosicao:
 
 		rts
 
-
+;----------------------------------
+Delay:
+						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
+	push r0
+	push r1
+	
+	loadn r1, #5  ; a
+   Delay_volta2:				; contador de tempo quebrado em duas partes (dois loops de decremento)
+	loadn r0, #3000	; b
+   Delay_volta: 
+	dec r0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
+	jnz Delay_volta	
+	Dec R1
+	jnz Delay_volta2
+	
+	pop r1
+	pop r0
+	
+	rts
 

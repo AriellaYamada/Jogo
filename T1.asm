@@ -9,6 +9,8 @@ Weapon : string "->"
 Stone : string "x"
 Invader : string "I"
 Pos_Invaders : var #20
+MinPos_Invaders : var #20
+MaxPos_Invaders : var #20
 rand_StonePos : var #10
 PosAnterior : var #1
 PosNova : var #1
@@ -45,6 +47,48 @@ static Pos_Invaders + #16, #145
 static Pos_Invaders + #17, #807
 static Pos_Invaders + #18, #901
 static Pos_Invaders + #19, #463
+
+static MinPos_Invaders + #0, #81
+static MinPos_Invaders + #1, #236
+static MinPos_Invaders + #2, #571
+static MinPos_Invaders + #3, #558
+static MinPos_Invaders + #4, #232
+static MinPos_Invaders + #5, #147
+static MinPos_Invaders + #6, #325
+static MinPos_Invaders + #7, #903
+static MinPos_Invaders + #8, #459
+static MinPos_Invaders + #9, #329
+static MinPos_Invaders + #10, #554
+static MinPos_Invaders + #11, #85
+static MinPos_Invaders + #12, #803
+static MinPos_Invaders + #13, #751
+static MinPos_Invaders + #14, #747
+static MinPos_Invaders + #15, #575
+static MinPos_Invaders + #16, #143
+static MinPos_Invaders + #17, #807
+static MinPos_Invaders + #18, #899
+static MinPos_Invaders + #19, #463
+
+static MaxPos_Invaders + #0, #83
+static MaxPos_Invaders + #1, #238
+static MaxPos_Invaders + #2, #573
+static MaxPos_Invaders + #3, #560
+static MaxPos_Invaders + #4, #234
+static MaxPos_Invaders + #5, #149
+static MaxPos_Invaders + #6, #327
+static MaxPos_Invaders + #7, #905
+static MaxPos_Invaders + #8, #461
+static MaxPos_Invaders + #9, #331
+static MaxPos_Invaders + #10, #556
+static MaxPos_Invaders + #11, #87
+static MaxPos_Invaders + #12, #805
+static MaxPos_Invaders + #13, #753
+static MaxPos_Invaders + #14, #749
+static MaxPos_Invaders + #15, #577
+static MaxPos_Invaders + #16, #145
+static MaxPos_Invaders + #17, #809
+static MaxPos_Invaders + #18, #901
+static MaxPos_Invaders + #19, #465
 
 
 ;------------- inicio --------------
@@ -267,83 +311,6 @@ FimLeTecla:
 	pop fr
 
 	rts
-
-;#################################################
-
-NovaPosicao:
-	
-	push r0
-	push r1
-	push r2
-	push r3
-	push r4
-	push r5
-
-	load r0, Tecla
-	loadn r4, #1119
-	loadn r5, #1160
-
-	loadn r1, #'d'
-	cmp r0, r1
-	jeq MoveRIGHT
-
-	loadn r1, #'a'
-	cmp r0, r1
-	jeq MoveLeft
-
-	
-	jmp Fim
-
-	MoveRIGHT:
-
-		loadn r0, #1
-;		load r1, PosAnterior
-		load r2, PosNova
-
-;		add r2, r1 , r0
-		inc r2
-		cmp r2, r5
-		jeq MoveBeginLine
-
-		store PosNova, r2
-
-		jmp Fim
-
-		MoveBeginLine:
-			loadn r0, #1120
-			store PosNova, r0
-			jmp Fim
-
-	MoveLeft:
-
-		loadn r0, #1
-		;load r1, PosAnterior
-		load r2, PosNova
-
-		;sub r2, r1, r0
-		dec r2
-		cmp r2, r4
-		jeg MoveEndLine
-
-		store PosNova, r2
-
-		jmp Fim
-
-		MoveEndLine:
-			loadn r0, #1159
-			store PosNova, r0
-			jmp Fim
-
-	Fim:
-
-		pop r5
-		pop r4
-		pop r3
-		pop r2
-		pop r1
-		pop r0
-
-		rts
 
 ;----------------------------------
 Delay:

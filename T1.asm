@@ -1,18 +1,53 @@
 ;------------- TRABALHO 1 - JOGO --------------
 
+tela0  : string "                                        "
+tela1  : string "                           x            "
+tela2  : string "      x                   xxx           "
+tela3  : string "     xxx                                "
+tela4  : string "                   x                    "
+tela5  : string "                  xxx                   "
+tela6  : string "                                        "
+tela7  : string "                                        "
+tela8  : string "            x                           "
+tela9  : string "           xxx                          "
+tela10 : string "                             x          "
+tela11 : string "                            xxx         "
+tela12 : string "                                        "
+tela13 : string "                   x                    "
+tela14 : string "                  xxx                   "
+tela15 : string "     x                                  "
+tela16 : string "    xxx                           x     "
+tela17 : string "                                 xxx    "
+tela18 : string "                                        "
+tela19 : string "                                        "
+tela20 : string "                                        "
+tela21 : string " ====================================== "
+tela22 : string "                                        "
+tela23 : string "                                        "
+tela24 : string "                                        "
+tela25 : string "                                        "
+tela26 : string "                                        "
+tela27 : string "                                        "
+tela28 : string "                                        "
+tela29 : string "                                        "
+
+
+
 jmp main
 
 ;------------- variaveis --------------
 
-Carachter : string "C"
-Weapon : string "->"
-Stone : string "x"
-Invader : string "I"
 Pos_Invaders : var #20
-rand_StonePos : var #10
+
 PosAnterior : var #1
 PosNova : var #1
+
 Tecla: var #1
+
+PosNovaTiro: var #1
+PosAnteriorTiro: var #1
+
+rand_StonePos : var #10
 
 static rand_StonePos + #0, #84
 static rand_StonePos + #1, #146
@@ -50,11 +85,15 @@ static Pos_Invaders + #19, #463
 ;------------- inicio --------------
 
 main:
-
+	
 	call PrintStones
+
 	call PrintInvaders
+
+	loadn r2, #'l'
 	loadn r0, #1140
-	load r1, Carachter
+	loadn r1, #8
+
 	outchar r1, r0
 
 	store PosAnterior, r0
@@ -71,6 +110,10 @@ main:
 
 		jeq Loop
 
+		cmp r3, r2
+
+		jeq Tiro
+
 		call ApagaPersonagem 
 
 		call NovaPosicao
@@ -79,11 +122,13 @@ main:
 
 		call AtualizaInvaders
 
-		call Delay
+		;call Delay
 
 		jmp Loop
 	
 	halt
+
+;#################################################
 
 PrintStones:
 
@@ -106,7 +151,7 @@ PrintStones:
 		jeq Fim_PrintStones
 		loadi r3, r0
 		;Imprime a primeira pos da pedra
-		load r4, Stone
+		loadn r4, #6
 		outchar r4, r3
 		;Imprime a segunda linha da pedra
 		add r3, r3, r5
@@ -119,17 +164,20 @@ PrintStones:
 		inc r2
 		jmp For_PrintStones
 
-		Fim_PrintStones:
-			pop r5
-			pop r4
-			pop r3
-			pop r2
-			pop r1
-			pop r0
-			rts
+Fim_PrintStones:
+
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+
+	rts
 
 	
 ;#################################################
+
 PrintInvaders:
 
 	push r0
@@ -139,7 +187,7 @@ PrintInvaders:
 	push r4
 
 	loadn r0, #Pos_Invaders
-	load r1, Invader
+	loadn r1, #7
 	loadn r2, #20
 	loadn r3, #0
 
@@ -174,7 +222,7 @@ AtualizaInvaders:
 	push r6
 
 	loadn r0, #Pos_Invaders
-	load r1, Invader
+	loadn r1, #7
 	loadn r2, #' '
 	loadn r3, #10
 	loadn r4, #0
@@ -184,17 +232,16 @@ AtualizaInvaders:
 		jeq FimAtualizaInvaders
 		loadi r5, r0
 		outchar r2, r5
-		dec r5
-		outchar r1, r5
-		
-		storei r0, r5
 		inc r0
 		loadi r6, r0
 		outchar r2, r6
+		dec r5
 		inc r6
+		;storei r0, r5
+		;dec r0
+		;storei r0, r6
+		outchar r1, r5
 		outchar r1, r6
-		
-		storei r0, r6
 		inc r0
 		inc r4
 		jmp LoopAtualizaInvaders
@@ -219,11 +266,12 @@ PrintPersonagem:
 		push r1
 
 		load r0, PosNova
-		load r1, Carachter
+		loadn r1, #9
 
 		outchar r1, r0
 
 		store PosAnterior, r0
+		store PosAnteriorTiro, r0
 
 		pop r1
 		pop r0
@@ -275,13 +323,16 @@ NovaPosicao:
 	push r0
 	push r1
 	push r2
-	push r3
-	push r4
-	push r5
 
 	load r0, Tecla
-	loadn r4, #1119
-	loadn r5, #1160
+
+	loadn r1, #'w' 
+	cmp r0, r1
+	jeq MoveUP
+
+	loadn r1, #'s'
+	cmp r0, r1
+	jeq MoveDOWN
 
 	loadn r1, #'d'
 	cmp r0, r1
@@ -291,77 +342,121 @@ NovaPosicao:
 	cmp r0, r1
 	jeq MoveLeft
 
-	
-	jmp Fim
+	MoveUP:
+
+		loadn r0, #40
+		load r1, PosAnterior
+		load r2, PosNova
+
+		sub r2, r1, r0
+
+		store PosNova, r2
+
+		jmp Fim
+
+	MoveDOWN:
+
+		loadn r0, #40
+		load r1, PosAnterior
+		load r2, PosNova
+
+		add r2, r1 , r0
+
+		store PosNova, r2
+
+		jmp Fim
 
 	MoveRIGHT:
 
 		loadn r0, #1
-;		load r1, PosAnterior
+		load r1, PosAnterior
 		load r2, PosNova
 
-;		add r2, r1 , r0
-		inc r2
-		cmp r2, r5
-		jeq MoveBeginLine
+		add r2, r1 , r0
 
 		store PosNova, r2
 
 		jmp Fim
-
-		MoveBeginLine:
-			loadn r0, #1120
-			store PosNova, r0
-			jmp Fim
 
 	MoveLeft:
 
 		loadn r0, #1
-		;load r1, PosAnterior
+		load r1, PosAnterior
 		load r2, PosNova
 
-		;sub r2, r1, r0
-		dec r2
-		cmp r2, r4
-		jeg MoveEndLine
+		sub r2, r1, r0
 
 		store PosNova, r2
 
 		jmp Fim
 
-		MoveEndLine:
-			loadn r0, #1159
-			store PosNova, r0
-			jmp Fim
-
 	Fim:
 
-		pop r5
-		pop r4
-		pop r3
 		pop r2
 		pop r1
 		pop r0
 
 		rts
 
-;----------------------------------
-Delay:
-						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
+;#################################################
+
+Tiro:
+	
 	push r0
 	push r1
+
+	load r0, PosAnteriorTiro
+	loadn r1, #8
+
+	outchar r1, r0
+
+	LoopTiro:
+
+		jmp ApagaTiro
+
+ApagaTiro:
 	
-	loadn r1, #5  ; a
-   Delay_volta2:				; contador de tempo quebrado em duas partes (dois loops de decremento)
-	loadn r0, #3000	; b
-   Delay_volta: 
-	dec r0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
-	jnz Delay_volta	
-	Dec R1
-	jnz Delay_volta2
+	push r0
+	push r1 
+
+	load r0, PosAnteriorTiro
+	loadn r1, #' '
+
+	outchar r1, r0
+
+	jmp IncrementaTiro
+
+IncrementaTiro:
 	
+	loadn r0, #40
+	load r1, PosAnteriorTiro
+	load r2, PosNovaTiro
+
+	sub r2, r1, r0
+
+	store PosNovaTiro, r2
+
+	jmp PrintTiro
+
+PrintTiro:
+	
+	push r0
+	push r1
+
+	load r0, PosNovaTiro
+	loadn r1, #8
+
+	outchar r1, r0
+
+	store PosAnteriorTiro, r0
+
+	jmp LoopTiro
+
+Sai:
+
 	pop r1
 	pop r0
-	
+
 	rts
 
+;#################################################

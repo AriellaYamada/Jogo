@@ -11,6 +11,7 @@ Invader : string "I"
 Pos_Invaders : var #20
 MinPos_Invaders : var #20
 MaxPos_Invaders : var #20
+Dir_Invaders : var #20
 rand_StonePos : var #10
 PosAnterior : var #1
 PosNova : var #1
@@ -90,6 +91,27 @@ static MaxPos_Invaders + #17, #809
 static MaxPos_Invaders + #18, #901
 static MaxPos_Invaders + #19, #465
 
+static Dir_Invaders + #0, #0 ;esq
+static Dir_Invaders + #1, #1 ;dir
+static Dir_Invaders + #2, #0
+static Dir_Invaders + #3, #1
+static Dir_Invaders + #4, #0
+static Dir_Invaders + #5, #1
+static Dir_Invaders + #6, #0
+static Dir_Invaders + #7, #1
+static Dir_Invaders + #8, #0
+static Dir_Invaders + #9, #1
+static Dir_Invaders + #10, #0
+static Dir_Invaders + #11, #1
+static Dir_Invaders + #12, #0
+static Dir_Invaders + #13, #1
+static Dir_Invaders + #14, #0
+static Dir_Invaders + #15, #1
+static Dir_Invaders + #16, #0
+static Dir_Invaders + #17, #1
+static Dir_Invaders + #18, #0
+static Dir_Invaders + #19, #1
+
 
 ;------------- inicio --------------
 
@@ -106,20 +128,18 @@ main:
 
 	Loop:
 
-		call LeTecla
+		;call LeTecla
 		
-		load r3, Tecla
-		loadn r4, #255
+		;load r3, Tecla
+		;loadn r4, #255
 
-		cmp r3, r4
+		;cmp r3, r4
 
 		jeq Loop
 
-		call ApagaPersonagem 
+		;call ApagaPersonagem 
 
-		call NovaPosicao
-
-		call PrintPersonagem
+		;call PrintPersonagem
 
 		call AtualizaInvaders
 
@@ -174,6 +194,7 @@ PrintStones:
 
 	
 ;#################################################
+
 PrintInvaders:
 
 	push r0
@@ -205,6 +226,7 @@ FimPrintInvaders:
 	pop r0
 	rts
 
+
 ;#################################################
 
 AtualizaInvaders:
@@ -216,35 +238,52 @@ AtualizaInvaders:
 	push r4
 	push r5
 	push r6
+	push r7
 
 	loadn r0, #Pos_Invaders
-	load r1, Invader
-	loadn r2, #' '
-	loadn r3, #10
-	loadn r4, #0
+	loadn r1, #11
+	loadn r2, #MinPos_Invaders
+	loadn r3, #MaxPos_Invaders
+	loadn r4, #Dir_Invaders
 
 	LoopAtualizaInvaders:
-		cmp r3, r4
-		jeq FimAtualizaInvaders
+		dec r1
+		jz FimAtualizaInvaders
 		loadi r5, r0
-		outchar r2, r5
-		dec r5
-		outchar r1, r5
-		
-		storei r0, r5
-		inc r0
-		loadi r6, r0
-		outchar r2, r6
-		inc r6
-		outchar r1, r6
-		
-		storei r0, r6
-		inc r0
-		inc r4
-		jmp LoopAtualizaInvaders
+		loadn r6, #' '
+		outchar r6, r5
+		loadi r7, r4
+		loadn r6, #0
+		cmp r6, r7
+		jeq Esquerda
+		jmp Direita
 
-	FimAtualizaInvaders:
+	
+		Esquerda:
+			cmp r5, r2 ;Verifica se esta na posição minima
+			jeq Direita
+			dec r5
+			jmp Imprime_Novo
 
+		Direita:
+			cmp r5, r3 ;Verifica se esta na posição maxima
+			jeq Esquerda
+			inc r5
+			jmp Imprime_Novo
+
+		Imprime_Novo:
+
+			load r6, Invader
+			outchar r6, r5
+			storei r0, r5
+			inc r2
+			inc r3
+			jmp LoopAtualizaInvaders
+
+
+	FimAtualizaInvaders:	
+
+		pop r7
 		pop r6
 		pop r5
 		pop r4

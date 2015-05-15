@@ -12,6 +12,7 @@ Pos_Invaders : var #20
 MinPos_Invaders : var #20
 MaxPos_Invaders : var #20
 Dir_Invaders : var #20
+Tiro_Invaders : var #40
 rand_StonePos : var #10
 PosAnterior : var #1
 PosNova : var #1
@@ -29,67 +30,67 @@ static rand_StonePos + #8, #806
 static rand_StonePos + #9, #902
 
 static Pos_Invaders + #0, #83
-static Pos_Invaders + #1, #236
-static Pos_Invaders + #2, #573
-static Pos_Invaders + #3, #558
+static Pos_Invaders + #1, #85
+static Pos_Invaders + #2, #145
+static Pos_Invaders + #3, #147
 static Pos_Invaders + #4, #234
-static Pos_Invaders + #5, #147
+static Pos_Invaders + #5, #236
 static Pos_Invaders + #6, #327
-static Pos_Invaders + #7, #903
+static Pos_Invaders + #7, #329
 static Pos_Invaders + #8, #461
-static Pos_Invaders + #9, #329
+static Pos_Invaders + #9, #463
 static Pos_Invaders + #10, #556
-static Pos_Invaders + #11, #85
-static Pos_Invaders + #12, #805
-static Pos_Invaders + #13, #751
+static Pos_Invaders + #11, #558
+static Pos_Invaders + #12, #573
+static Pos_Invaders + #13, #575
 static Pos_Invaders + #14, #749
-static Pos_Invaders + #15, #575
-static Pos_Invaders + #16, #145
+static Pos_Invaders + #15, #751
+static Pos_Invaders + #16, #805
 static Pos_Invaders + #17, #807
 static Pos_Invaders + #18, #901
-static Pos_Invaders + #19, #463
+static Pos_Invaders + #19, #903
 
 static MinPos_Invaders + #0, #81
-static MinPos_Invaders + #1, #236
-static MinPos_Invaders + #2, #571
-static MinPos_Invaders + #3, #558
+static MinPos_Invaders + #1, #85
+static MinPos_Invaders + #2, #143
+static MinPos_Invaders + #3, #147
 static MinPos_Invaders + #4, #232
-static MinPos_Invaders + #5, #147
+static MinPos_Invaders + #5, #236
 static MinPos_Invaders + #6, #325
-static MinPos_Invaders + #7, #903
+static MinPos_Invaders + #7, #329
 static MinPos_Invaders + #8, #459
-static MinPos_Invaders + #9, #329
+static MinPos_Invaders + #9, #463
 static MinPos_Invaders + #10, #554
-static MinPos_Invaders + #11, #85
-static MinPos_Invaders + #12, #803
-static MinPos_Invaders + #13, #751
+static MinPos_Invaders + #11, #558
+static MinPos_Invaders + #12, #571
+static MinPos_Invaders + #13, #575
 static MinPos_Invaders + #14, #747
-static MinPos_Invaders + #15, #575
-static MinPos_Invaders + #16, #143
+static MinPos_Invaders + #15, #751
+static MinPos_Invaders + #16, #803
 static MinPos_Invaders + #17, #807
 static MinPos_Invaders + #18, #899
-static MinPos_Invaders + #19, #463
+static MinPos_Invaders + #19, #903
 
 static MaxPos_Invaders + #0, #83
-static MaxPos_Invaders + #1, #238
-static MaxPos_Invaders + #2, #573
-static MaxPos_Invaders + #3, #560
-static MaxPos_Invaders + #4, #234
-static MaxPos_Invaders + #5, #149
+static MaxPos_Invaders + #1, #87
+static MaxPos_Invaders + #2, #145
+static MaxPos_Invaders + #3, #149
+static MaxPos_Invaders + #4, #233
+static MaxPos_Invaders + #5, #238
 static MaxPos_Invaders + #6, #327
-static MaxPos_Invaders + #7, #905
+static MaxPos_Invaders + #7, #331
 static MaxPos_Invaders + #8, #461
-static MaxPos_Invaders + #9, #331
+static MaxPos_Invaders + #9, #465
 static MaxPos_Invaders + #10, #556
-static MaxPos_Invaders + #11, #87
-static MaxPos_Invaders + #12, #805
-static MaxPos_Invaders + #13, #753
+static MaxPos_Invaders + #11, #560
+static MaxPos_Invaders + #12, #573
+static MaxPos_Invaders + #13, #577
 static MaxPos_Invaders + #14, #749
-static MaxPos_Invaders + #15, #577
-static MaxPos_Invaders + #16, #145
+static MaxPos_Invaders + #15, #753
+static MaxPos_Invaders + #16, #805
 static MaxPos_Invaders + #17, #809
 static MaxPos_Invaders + #18, #901
-static MaxPos_Invaders + #19, #465
+static MaxPos_Invaders + #19, #905
 
 static Dir_Invaders + #0, #0 ;esq
 static Dir_Invaders + #1, #1 ;dir
@@ -113,6 +114,8 @@ static Dir_Invaders + #18, #0
 static Dir_Invaders + #19, #1
 
 
+
+
 ;------------- inicio --------------
 
 main:
@@ -127,19 +130,6 @@ main:
 	store PosNova, r0
 
 	Loop:
-
-		;call LeTecla
-		
-		;load r3, Tecla
-		;loadn r4, #255
-
-		;cmp r3, r4
-
-		jeq Loop
-
-		;call ApagaPersonagem 
-
-		;call PrintPersonagem
 
 		call AtualizaInvaders
 
@@ -241,43 +231,50 @@ AtualizaInvaders:
 	push r7
 
 	loadn r0, #Pos_Invaders
-	loadn r1, #11
+	loadn r1, #21
 	loadn r2, #MinPos_Invaders
 	loadn r3, #MaxPos_Invaders
 	loadn r4, #Dir_Invaders
-
+	;breakp
 	LoopAtualizaInvaders:
 		dec r1
 		jz FimAtualizaInvaders
-		loadi r5, r0
-		loadn r6, #' '
-		outchar r6, r5
+		loadi r5, r0	
+		loadn r6, #' '	
+		outchar r6, r5	;Apaga invader
 		loadi r7, r4
 		loadn r6, #0
-		cmp r6, r7
-		jeq Esquerda
-		jmp Direita
+		cmp r6, r7				;Verifica para onde estava andando
+		jeq MovInv_Esquerda		;Se estava indo para a esquerda, mantém
+		jmp MocInv_Direita  	;Se estarava indo para a direita, mantém
 
-	
-		Esquerda:
-			cmp r5, r2 ;Verifica se esta na posição minima
-			jeq Direita
-			dec r5
+		MovInv_Esquerda:
+			loadi r6, r2
+			cmp r5, r6			;Verifica se esta na posição minima
+			jeq MocInv_Direita 	;Se na posição min, então anda para a direita
+			loadn r7, #0		;Grava a direção para qual esta andando
+			storei r4, r7
+			dec r5				;Calcula nova posição
 			jmp Imprime_Novo
 
-		Direita:
-			cmp r5, r3 ;Verifica se esta na posição maxima
-			jeq Esquerda
-			inc r5
-			jmp Imprime_Novo
+		MocInv_Direita:
+			loadi r6, r3
+			cmp r5, r6 			;Verifica se esta na posição maxima
+			jeq MovInv_Esquerda	;Se esta na posição maxima, então anda para a esquerda
+			loadn r7, #1
+			storei r4, r7		;Armazena a direção para qual vai andar
+			inc r5				;Calcula nova posição
+			jmp Imprime_Novo	
 
 		Imprime_Novo:
 
+			storei r0, r5
 			load r6, Invader
 			outchar r6, r5
-			storei r0, r5
+			inc r0
 			inc r2
 			inc r3
+			inc r4
 			jmp LoopAtualizaInvaders
 
 

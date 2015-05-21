@@ -35,7 +35,7 @@ tela29 : string "                                        "
 Carachter : string "C"
 Weapon : string "->"
 Stone : string "x"
-Invader : string "I"
+Invader : var #1
 Tiro_Invader : string ":"
 Pos_Invaders : var #20
 MinPos_Invaders : var #20
@@ -47,6 +47,9 @@ rand_StonePos : var #10
 PosAnterior : var #1
 PosNova : var #1
 Tecla: var #1
+
+static Invader + #0, #585
+
 
 static rand_StonePos + #0, #84
 static rand_StonePos + #1, #146
@@ -207,6 +210,7 @@ main:
 	store ContadorFim, r3
 
 	call PrintInvaders
+	call PrintStones
 
 	LoopMain:
 
@@ -310,6 +314,54 @@ Delay:
 
 		rts
 
+;#################################################
+
+PrintStones:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+
+
+	loadn r0, #rand_StonePos
+	loadn r1, #10 	; numero de pedras na tela
+	loadn r2, #0	; contador
+	loadn r5, #39
+
+	For_PrintStones: 
+
+		cmp r2, r1
+		jeq Fim_PrintStones
+		loadi r3, r0
+		;Imprime a primeira pos da pedra
+		loadn r4, #7 ;Carrega o "desenho" da pedra
+		loadn r6, #256 ;Carrega a cor da pedra
+		add r4, r4, r6
+		outchar r4, r3
+		;Imprime a segunda linha da pedra
+		add r3, r3, r5
+		outchar r4, r3
+		inc r3
+		outchar r4, r3
+		inc r3
+		outchar r4, r3
+		inc r0
+		inc r2
+		jmp For_PrintStones
+
+		Fim_PrintStones:
+			pop r6
+			pop r5
+			pop r4
+			pop r3
+			pop r2
+			pop r1
+			pop r0
+			rts
 
 ;#################################################
 		

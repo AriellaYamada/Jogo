@@ -186,6 +186,8 @@ QtdInvaders: var #1
 
 static QtdInvaders + #0, #20
 
+static Vidas + #0, #3
+
 
 ;------------- inicio --------------
 
@@ -213,6 +215,8 @@ main:
 		cmp r0, r1
 		jeq EstouroContador
 
+		call AtualizaInvaders
+
 		loadn r1, #10
 		loadn r2, #0
 		mod r1, r0, r1
@@ -227,8 +231,6 @@ main:
 
 		;jeq LoopAlien
 
-
-		call AtualizaInvaders
 
 		loadn r1, #2
 		loadn r2, #0
@@ -262,6 +264,8 @@ main:
 		call AtualizaPersonagem
 
 		call PrintPersonagem
+
+		call VerificaFim
 
 		jmp LoopMain
 
@@ -703,6 +707,7 @@ VerificaTiro_Invader:
 
 	ZeraFlagTiro:
 		loadn r4, #0
+
 		jmp EndVerificaTiro_Invader
 
 	EndVerificaTiro_Invader:
@@ -714,6 +719,8 @@ VerificaTiro_Invader:
 		pop r1
 		pop r0
 		rts
+
+
 
 ;#################################################
 
@@ -758,7 +765,7 @@ PerdeVida:
 
 	load r0, Vidas	
 	dec r0			;Decrementa o numero de vidas
-	;jz FimPerdeu	;Caso não hajam mais vidas, o jogo acaba
+	jz FimPerdeu	;Caso não hajam mais vidas, o jogo acaba
 	store Vidas, r0	;Armazena a nova quantidade de vidas
 
 	pop r0
@@ -783,7 +790,7 @@ MataInvader:
 	storei r1, r4			;Atualiza a condição do Invader
 
 	dec r0					;Decrementa a quantidade de Invaders vivos
-	;jz FimGanhou			;Caso não hajam mais Invaders vivos, o jogo acaba
+	jz FimGanhou			;Caso não hajam mais Invaders vivos, o jogo acaba
 	store QtdInvaders, r0	;Atualiza quantidade de Invaders vivos
 
 	pop r4
@@ -794,7 +801,17 @@ MataInvader:
 	rts
 
 
+;#################################################
 
+FimGanhou:
+
+	halt
+
+;#################################################
+
+FimPerdeu:
+
+	halt
 
 
 

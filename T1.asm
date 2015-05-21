@@ -37,7 +37,6 @@ jmp main
 
 ;------------- variaveis --------------
 
-Pos_Invaders : var #20
 
 PosAnterior : var #1
 PosNova : var #1
@@ -46,215 +45,125 @@ Tecla: var #1
 
 PosNovaTiro: var #1
 PosAnteriorTiro: var #1
+FlagTiro: var #1
 
-rand_StonePos : var #10
+Contador: var #1
+ContadorFim: var #1
 
-static rand_StonePos + #0, #84
-static rand_StonePos + #1, #146
-static rand_StonePos + #2, #235
-static rand_StonePos + #3, #328
-static rand_StonePos + #4, #462
-static rand_StonePos + #5, #557
-static rand_StonePos + #6, #574
-static rand_StonePos + #7, #750
-static rand_StonePos + #8, #806
-static rand_StonePos + #9, #902
-
-static Pos_Invaders + #0, #83
-static Pos_Invaders + #1, #236
-static Pos_Invaders + #2, #573
-static Pos_Invaders + #3, #558
-static Pos_Invaders + #4, #234
-static Pos_Invaders + #5, #147
-static Pos_Invaders + #6, #327
-static Pos_Invaders + #7, #903
-static Pos_Invaders + #8, #461
-static Pos_Invaders + #9, #329
-static Pos_Invaders + #10, #556
-static Pos_Invaders + #11, #85
-static Pos_Invaders + #12, #805
-static Pos_Invaders + #13, #751
-static Pos_Invaders + #14, #749
-static Pos_Invaders + #15, #575
-static Pos_Invaders + #16, #145
-static Pos_Invaders + #17, #807
-static Pos_Invaders + #18, #901
-static Pos_Invaders + #19, #463
 
 
 ;------------- inicio --------------
 
 main:
 	
-	call PrintStones
-
-	call PrintInvaders
-
-	loadn r2, #'l'
+	
 	loadn r0, #1140
-	loadn r1, #8
+	loadn r1, #9
+	loadn r2, #0
+	loadn r3, #16
 
 	outchar r1, r0
 
 	store PosAnterior, r0
 	store PosNova, r0
+	store Contador, r2
+	store ContadorFim, r3
 
-	Loop:
+	LoopMain:
+
+		load r0, Contador
+		loadn r1, #65530
+		cmp r0, r1
+		jeq EstouroContador
+
+		loadn r1, #10
+		loadn r2, #0
+		mod r1, r0, r1
+		cmp r1, r2
+
+		jeq LoopPersonagem
+
+		;loadn r1, #5
+		;loadn r2, #0
+		;mod r1, r0, r1
+		;cmp r1, r2
+
+		;jeq LoopAlien
+
+		loadn r1, #2
+		loadn r2, #0
+		mod r1, r0, r1
+		cmp r1, r2
+
+		jeq LoopTiro
+		
+		load r0, ContadorFim
+		cmp r0, r3
+
+		;jeq LoopFim
+
+		call Delay
+
+		load r0, Contador
+		inc r0
+
+		jmp LoopMain
+	
+	LoopFim:
+		
+		halt
+
+	LoopPersonagem:
 
 		call LeTecla
-		
-		load r3, Tecla
-		loadn r4, #255
 
-		cmp r3, r4
+		call ApagaPersonagem
 
-		jeq Loop
-
-		cmp r3, r2
-
-		jeq Tiro
-
-		call ApagaPersonagem 
-
-		call NovaPosicao
+		call AtualizaPersonagem
 
 		call PrintPersonagem
 
-		call AtualizaInvaders
+		jmp LoopMain
 
-		;call Delay
+	;LoopAlien:
 
-		jmp Loop
-	
-	halt
+	LoopTiro:
+
+		call AtualizaTiro
+
+		call PrintTiro
+
+		jmp LoopMain
+
+		
+;#################################################
+
+
+EstouroContador:
+
+	loadn r0, #0
+	store Contador, r0
+	jmp LoopMain
+
 
 ;#################################################
 
-PrintStones:
 
-	push r0
-	push r1
-	push r2
-	push r3
-	push r4
-	push r5
-
-
-	loadn r0, #rand_StonePos
-	loadn r1, #10 	; numero de pedras na tela
-	loadn r2, #0	; contador
-	loadn r5, #39
-
-	For_PrintStones: 
-
-		cmp r2, r1
-		jeq Fim_PrintStones
-		loadi r3, r0
-		;Imprime a primeira pos da pedra
-		loadn r4, #6
-		outchar r4, r3
-		;Imprime a segunda linha da pedra
-		add r3, r3, r5
-		outchar r4, r3
-		inc r3
-		outchar r4, r3
-		inc r3
-		outchar r4, r3
-		inc r0
-		inc r2
-		jmp For_PrintStones
-
-Fim_PrintStones:
-
-	pop r5
-	pop r4
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-
-	rts
-
+Delay:
 	
-;#################################################
+	loadn r1, #20
+ 
+	Delay2:
 
-PrintInvaders:
+		loadn r0, #300
 
-	push r0
-	push r1
-	push r2
-	push r3
-	push r4
+	Delay1: 
 
-	loadn r0, #Pos_Invaders
-	loadn r1, #7
-	loadn r2, #20
-	loadn r3, #0
+		dec r0
+		jnz Delay1
+		dec r1
+		jnz Delay2
 
-	LoopPrintInvaders:
-
-		cmp r3, r2
-		jeq FimPrintInvaders
-		loadi r4, r0
-		outchar r1, r4
-		inc r0
-		inc r3
-		jmp LoopPrintInvaders
-
-FimPrintInvaders:
-	pop r4
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
-
-;#################################################
-
-AtualizaInvaders:
-	
-	push r0
-	push r1
-	push r2
-	push r3
-	push r4
-	push r5
-	push r6
-
-	loadn r0, #Pos_Invaders
-	loadn r1, #7
-	loadn r2, #' '
-	loadn r3, #10
-	loadn r4, #0
-
-	LoopAtualizaInvaders:
-		cmp r3, r4
-		jeq FimAtualizaInvaders
-		loadi r5, r0
-		outchar r2, r5
-		inc r0
-		loadi r6, r0
-		outchar r2, r6
-		dec r5
-		inc r6
-		;storei r0, r5
-		;dec r0
-		;storei r0, r6
-		outchar r1, r5
-		outchar r1, r6
-		inc r0
-		inc r4
-		jmp LoopAtualizaInvaders
-
-	FimAtualizaInvaders:
-
-		pop r6
-		pop r5
-		pop r4
-		pop r3
-		pop r2
-		pop r1
-		pop r0
 		rts
 
 
@@ -271,14 +180,12 @@ PrintPersonagem:
 		outchar r1, r0
 
 		store PosAnterior, r0
-		store PosAnteriorTiro, r0
+		;store PosAnteriorTiro, r0
 
 		pop r1
 		pop r0
 
 		rts
-
-;#################################################
 
 ApagaPersonagem:
 		
@@ -295,30 +202,7 @@ ApagaPersonagem:
 
 	rts
 
-;#################################################
-
-
-LeTecla:
-
-	push fr
-	push r0
-
-	LoopLeTecla:
-
-		inchar r0
-		
-		store Tecla, r0
-
-FimLeTecla:
-
-	pop r0
-	pop fr
-
-	rts
-
-;#################################################
-
-NovaPosicao:
+AtualizaPersonagem:
 	
 	push r0
 	push r1
@@ -341,6 +225,10 @@ NovaPosicao:
 	loadn r1, #'a'
 	cmp r0, r1
 	jeq MoveLeft
+
+	loadn r1, #'l'
+	cmp r0, r1
+	jeq Atirou1
 
 	MoveUP:
 
@@ -390,6 +278,11 @@ NovaPosicao:
 
 		jmp Fim
 
+	Atirou1:
+
+		loadn r0, #1
+		store FlagTiro, r0 
+
 	Fim:
 
 		pop r2
@@ -400,63 +293,126 @@ NovaPosicao:
 
 ;#################################################
 
-Tiro:
-	
+LeTecla:
+
 	push r0
 	push r1
 
-	load r0, PosAnteriorTiro
-	loadn r1, #8
+	LoopLeTecla:
 
-	outchar r1, r0
+		loadn r1, #255
 
-	LoopTiro:
+		inchar r0
 
-		jmp ApagaTiro
+		cmp r0, r1
+		
+		jeq LoopLeTecla
 
-ApagaTiro:
+		store Tecla, r0
+
+		pop r0
+		pop r1
+
+		rts
+
+;#################################################
+
+
+AtualizaTiro:
 	
 	push r0
-	push r1 
+	push r1
+	push r2
+	push r3
 
-	load r0, PosAnteriorTiro
-	loadn r1, #' '
+	load r0, FlagTiro
+	loadn r1, #1
+	cmp r0 , r1
+	jeq Atirou
+	jmp NAtirou
 
-	outchar r1, r0
 
-	jmp IncrementaTiro
+	Atirou:
 
-IncrementaTiro:
-	
-	loadn r0, #40
-	load r1, PosAnteriorTiro
-	load r2, PosNovaTiro
+		loadn r0, #40
+		load r1, PosAnteriorTiro
+		loadn r2, #38
+		
+		mod r3, r1, r0
+		cmp r3, r5
+		jeq FimFlagTiro
+		
+		sub r1, r1, r0
 
-	sub r2, r1, r0
+		store PosAnteriorTiro, r1
 
-	store PosNovaTiro, r2
+		sub r1, r1, r0
 
-	jmp PrintTiro
+		store PosNovaTiro, r1 
+
+		jmp FimTiro
+
+
+	NAtirou:
+
+		loadn r0, #40
+		load r1, PosNovaTiro
+
+		sub r1, r1, r0
+
+		store PosNovaTiro, r1
+		store PosAnteriorTiro, r1
+
+		jmp FimTiro
+
+
+	FimFlagTiro:
+
+		loadn r0, #0
+		store FlagTiro, r0
+		load r1, PosNovaTiro
+		loadn r0, #' '
+		outchar r0, r1
+
+		Jmp FimTiro
+
+
+	FimTiro:
+
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+
 
 PrintTiro:
 	
 	push r0
 	push r1
+	push r2
 
-	load r0, PosNovaTiro
-	loadn r1, #8
+	load r0, FlagTiro
+	loadn r1, #1
+	cmp r0, r1
 
-	outchar r1, r0
+	jeq Print
+	jmp FimPrintTiro
 
-	store PosAnteriorTiro, r0
 
-	jmp LoopTiro
+	Print:
 
-Sai:
 
-	pop r1
-	pop r0
+		load r0, PosAnteriorTiro	
+		load r1, PosNovaTiro
+		loadn r2, #8
+		
+		outchar r2, r1
 
-	rts
+	
+	FimPrintTiro:
 
-;#################################################
+		pop r2
+		pop r1
+		pop r0
+
+		rts

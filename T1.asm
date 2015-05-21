@@ -8,10 +8,12 @@ Carachter : string "C"
 Weapon : string "->"
 Stone : string "x"
 Invader : string "I"
+Tiro_Invader : string ":"
 Pos_Invaders : var #20
 MinPos_Invaders : var #20
 MaxPos_Invaders : var #20
 Dir_Invaders : var #20
+FlagTiro_Invaders: var #20
 Tiro_Invaders : var #40
 rand_StonePos : var #10
 PosAnterior : var #1
@@ -24,7 +26,7 @@ static rand_StonePos + #2, #235
 static rand_StonePos + #3, #328
 static rand_StonePos + #4, #462
 static rand_StonePos + #5, #557
-static rand_StonePos + #6, #574
+static rand_StonePos + #6, #573
 static rand_StonePos + #7, #750
 static rand_StonePos + #8, #806
 static rand_StonePos + #9, #902
@@ -41,8 +43,8 @@ static Pos_Invaders + #8, #461
 static Pos_Invaders + #9, #463
 static Pos_Invaders + #10, #556
 static Pos_Invaders + #11, #558
-static Pos_Invaders + #12, #573
-static Pos_Invaders + #13, #575
+static Pos_Invaders + #12, #572
+static Pos_Invaders + #13, #574
 static Pos_Invaders + #14, #749
 static Pos_Invaders + #15, #751
 static Pos_Invaders + #16, #805
@@ -62,8 +64,8 @@ static MinPos_Invaders + #8, #459
 static MinPos_Invaders + #9, #463
 static MinPos_Invaders + #10, #554
 static MinPos_Invaders + #11, #558
-static MinPos_Invaders + #12, #571
-static MinPos_Invaders + #13, #575
+static MinPos_Invaders + #12, #570
+static MinPos_Invaders + #13, #574
 static MinPos_Invaders + #14, #747
 static MinPos_Invaders + #15, #751
 static MinPos_Invaders + #16, #803
@@ -83,8 +85,8 @@ static MaxPos_Invaders + #8, #461
 static MaxPos_Invaders + #9, #465
 static MaxPos_Invaders + #10, #556
 static MaxPos_Invaders + #11, #560
-static MaxPos_Invaders + #12, #573
-static MaxPos_Invaders + #13, #577
+static MaxPos_Invaders + #12, #572
+static MaxPos_Invaders + #13, #576
 static MaxPos_Invaders + #14, #749
 static MaxPos_Invaders + #15, #753
 static MaxPos_Invaders + #16, #805
@@ -113,7 +115,26 @@ static Dir_Invaders + #17, #1
 static Dir_Invaders + #18, #0
 static Dir_Invaders + #19, #1
 
-
+static FlagTiro_Invaders + #0, #0
+static FlagTiro_Invaders + #1, #0
+static FlagTiro_Invaders + #2, #0
+static FlagTiro_Invaders + #3, #0
+static FlagTiro_Invaders + #4, #0
+static FlagTiro_Invaders + #5, #0
+static FlagTiro_Invaders + #6, #0
+static FlagTiro_Invaders + #7, #0
+static FlagTiro_Invaders + #8, #0
+static FlagTiro_Invaders + #9, #0
+static FlagTiro_Invaders + #10, #0
+static FlagTiro_Invaders + #11, #0
+static FlagTiro_Invaders + #12, #0
+static FlagTiro_Invaders + #13, #0
+static FlagTiro_Invaders + #14, #0
+static FlagTiro_Invaders + #15, #0
+static FlagTiro_Invaders + #16, #0
+static FlagTiro_Invaders + #17, #0
+static FlagTiro_Invaders + #18, #0
+static FlagTiro_Invaders + #19, #0
 
 
 ;------------- inicio --------------
@@ -132,6 +153,10 @@ main:
 	Loop:
 
 		call AtualizaInvaders
+
+		;call Atira_Invader
+
+		;call AtualizaTiro_Invaders
 
 		call Delay
 
@@ -235,7 +260,7 @@ AtualizaInvaders:
 	loadn r2, #MinPos_Invaders
 	loadn r3, #MaxPos_Invaders
 	loadn r4, #Dir_Invaders
-	;breakp
+
 	LoopAtualizaInvaders:
 		dec r1
 		jz FimAtualizaInvaders
@@ -275,6 +300,7 @@ AtualizaInvaders:
 			inc r2
 			inc r3
 			inc r4
+			;call VerificaTiro_Invader
 			jmp LoopAtualizaInvaders
 
 
@@ -290,6 +316,103 @@ AtualizaInvaders:
 		pop r0
 		rts
 
+;#################################################
+
+VerificaTiro_Invader:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+
+	loadn r0, #FlagTiro_Invaders
+	loadn r2, #21
+	loadn r3, #2
+
+	sub r2, r2, r1
+	add r0, r0, r2
+
+	loadi r4, r0
+
+	cmp r4, r2
+	jeq ZeraFlagTiro
+	inc r4
+	jmp EndVerificaTiro_Invader
+
+	ZeraFlagTiro:
+		loadn r4, #0
+		jmp EndVerificaTiro_Invader
+
+	EndVerificaTiro_Invader:
+
+		storei r0, r4
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+		rts
+
+
+;#################################################
+
+Atira_Invader:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+
+	loadn r0, #Tiro_Invaders
+	loadn r1, #40
+	loadn r2, #Pos_Invaders
+	loadn r3, #FlagTiro_Invaders
+	loadn r4, #21	
+
+	LoopPrintTiro_Invader:
+		dec r4
+		jz FimPrintTiro_Invaders
+		inc r2
+		inc r3
+		loadi r5, #FlagTiro_Invaders
+		jnz Atira
+		inc r0
+		inc r0
+		jmp LoopPrintTiro_Invader
+
+		Atira:
+			loadn r6, #2
+			cmp r5, r6
+			jeq Tiro2
+			loadi r5, r2
+			add r5, r5, r1
+			storei r0, r5
+			inc r0
+			inc r0
+			jmp LoopPrintTiro_Invader
+
+			Tiro2:
+				inc r0
+				loadi r5, r2
+				add r5, r5, r1
+				storei r0, r5
+				inc r0
+				jmp LoopPrintTiro_Invader
+
+		FimPrintTiro_Invaders:
+
+			pop r6
+			pop r5
+			pop r4
+			pop r3
+			pop r2
+			pop r1
+			pop r0
+			rts
 
 ;#################################################
 		

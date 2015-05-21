@@ -355,64 +355,7 @@ VerificaTiro_Invader:
 		rts
 
 
-;#################################################
 
-Atira_Invader:
-
-	push r0
-	push r1
-	push r2
-	push r3
-	push r4
-	push r5
-	push r6
-
-	loadn r0, #Tiro_Invaders
-	loadn r1, #40
-	loadn r2, #Pos_Invaders
-	loadn r3, #FlagTiro_Invaders
-	loadn r4, #21	
-
-	LoopPrintTiro_Invader:
-		dec r4
-		jz FimPrintTiro_Invaders
-		inc r2
-		inc r3
-		loadi r5, #FlagTiro_Invaders
-		jnz Atira
-		inc r0
-		inc r0
-		jmp LoopPrintTiro_Invader
-
-		Atira:
-			loadn r6, #2
-			cmp r5, r6
-			jeq Tiro2
-			loadi r5, r2
-			add r5, r5, r1
-			storei r0, r5
-			inc r0
-			inc r0
-			jmp LoopPrintTiro_Invader
-
-			Tiro2:
-				inc r0
-				loadi r5, r2
-				add r5, r5, r1
-				storei r0, r5
-				inc r0
-				jmp LoopPrintTiro_Invader
-
-		FimPrintTiro_Invaders:
-
-			pop r6
-			pop r5
-			pop r4
-			pop r3
-			pop r2
-			pop r1
-			pop r0
-			rts
 
 ;#################################################
 		

@@ -32,6 +32,137 @@ tela28 : string "                                        "
 tela29 : string "                                        "
 
 
+Carachter : string "C"
+Weapon : string "->"
+Stone : string "x"
+Invader : string "I"
+Tiro_Invader : string ":"
+Pos_Invaders : var #20
+MinPos_Invaders : var #20
+MaxPos_Invaders : var #20
+Dir_Invaders : var #20
+FlagTiro_Invaders: var #20
+Tiro_Invaders : var #40
+rand_StonePos : var #10
+PosAnterior : var #1
+PosNova : var #1
+Tecla: var #1
+
+static rand_StonePos + #0, #84
+static rand_StonePos + #1, #146
+static rand_StonePos + #2, #235
+static rand_StonePos + #3, #328
+static rand_StonePos + #4, #462
+static rand_StonePos + #5, #557
+static rand_StonePos + #6, #573
+static rand_StonePos + #7, #750
+static rand_StonePos + #8, #806
+static rand_StonePos + #9, #902
+
+static Pos_Invaders + #0, #83
+static Pos_Invaders + #1, #85
+static Pos_Invaders + #2, #145
+static Pos_Invaders + #3, #147
+static Pos_Invaders + #4, #234
+static Pos_Invaders + #5, #236
+static Pos_Invaders + #6, #327
+static Pos_Invaders + #7, #329
+static Pos_Invaders + #8, #461
+static Pos_Invaders + #9, #463
+static Pos_Invaders + #10, #556
+static Pos_Invaders + #11, #558
+static Pos_Invaders + #12, #572
+static Pos_Invaders + #13, #574
+static Pos_Invaders + #14, #749
+static Pos_Invaders + #15, #751
+static Pos_Invaders + #16, #805
+static Pos_Invaders + #17, #807
+static Pos_Invaders + #18, #901
+static Pos_Invaders + #19, #903
+
+static MinPos_Invaders + #0, #81
+static MinPos_Invaders + #1, #85
+static MinPos_Invaders + #2, #143
+static MinPos_Invaders + #3, #147
+static MinPos_Invaders + #4, #232
+static MinPos_Invaders + #5, #236
+static MinPos_Invaders + #6, #325
+static MinPos_Invaders + #7, #329
+static MinPos_Invaders + #8, #459
+static MinPos_Invaders + #9, #463
+static MinPos_Invaders + #10, #554
+static MinPos_Invaders + #11, #558
+static MinPos_Invaders + #12, #570
+static MinPos_Invaders + #13, #574
+static MinPos_Invaders + #14, #747
+static MinPos_Invaders + #15, #751
+static MinPos_Invaders + #16, #803
+static MinPos_Invaders + #17, #807
+static MinPos_Invaders + #18, #899
+static MinPos_Invaders + #19, #903
+
+static MaxPos_Invaders + #0, #83
+static MaxPos_Invaders + #1, #87
+static MaxPos_Invaders + #2, #145
+static MaxPos_Invaders + #3, #149
+static MaxPos_Invaders + #4, #233
+static MaxPos_Invaders + #5, #238
+static MaxPos_Invaders + #6, #327
+static MaxPos_Invaders + #7, #331
+static MaxPos_Invaders + #8, #461
+static MaxPos_Invaders + #9, #465
+static MaxPos_Invaders + #10, #556
+static MaxPos_Invaders + #11, #560
+static MaxPos_Invaders + #12, #572
+static MaxPos_Invaders + #13, #576
+static MaxPos_Invaders + #14, #749
+static MaxPos_Invaders + #15, #753
+static MaxPos_Invaders + #16, #805
+static MaxPos_Invaders + #17, #809
+static MaxPos_Invaders + #18, #901
+static MaxPos_Invaders + #19, #905
+
+static Dir_Invaders + #0, #0 ;esq
+static Dir_Invaders + #1, #1 ;dir
+static Dir_Invaders + #2, #0
+static Dir_Invaders + #3, #1
+static Dir_Invaders + #4, #0
+static Dir_Invaders + #5, #1
+static Dir_Invaders + #6, #0
+static Dir_Invaders + #7, #1
+static Dir_Invaders + #8, #0
+static Dir_Invaders + #9, #1
+static Dir_Invaders + #10, #0
+static Dir_Invaders + #11, #1
+static Dir_Invaders + #12, #0
+static Dir_Invaders + #13, #1
+static Dir_Invaders + #14, #0
+static Dir_Invaders + #15, #1
+static Dir_Invaders + #16, #0
+static Dir_Invaders + #17, #1
+static Dir_Invaders + #18, #0
+static Dir_Invaders + #19, #1
+
+static FlagTiro_Invaders + #0, #0
+static FlagTiro_Invaders + #1, #0
+static FlagTiro_Invaders + #2, #0
+static FlagTiro_Invaders + #3, #0
+static FlagTiro_Invaders + #4, #0
+static FlagTiro_Invaders + #5, #0
+static FlagTiro_Invaders + #6, #0
+static FlagTiro_Invaders + #7, #0
+static FlagTiro_Invaders + #8, #0
+static FlagTiro_Invaders + #9, #0
+static FlagTiro_Invaders + #10, #0
+static FlagTiro_Invaders + #11, #0
+static FlagTiro_Invaders + #12, #0
+static FlagTiro_Invaders + #13, #0
+static FlagTiro_Invaders + #14, #0
+static FlagTiro_Invaders + #15, #0
+static FlagTiro_Invaders + #16, #0
+static FlagTiro_Invaders + #17, #0
+static FlagTiro_Invaders + #18, #0
+static FlagTiro_Invaders + #19, #0
 
 jmp main
 
@@ -50,6 +181,10 @@ FlagTiro: var #1
 Contador: var #1
 ContadorFim: var #1
 
+Vidas: var #1
+QtdInvaders: var #1
+
+static QtdInvaders + #0, #20
 
 
 ;------------- inicio --------------
@@ -416,4 +551,258 @@ PrintTiro:
 		pop r0
 
 		rts
+
+	
+;#################################################
+
+PrintInvaders:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+
+	loadn r0, #Pos_Invaders
+	load r1, Invader
+	loadn r2, #20
+	loadn r3, #0
+
+	LoopPrintInvaders:
+
+		cmp r3, r2
+		jeq FimPrintInvaders
+		loadi r4, r0
+		outchar r1, r4
+		inc r0
+		inc r3
+		jmp LoopPrintInvaders
+
+FimPrintInvaders:
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+
+;#################################################
+
+AtualizaInvaders:
+	
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+	push r7
+
+	loadn r0, #Pos_Invaders
+	loadn r1, #21
+	loadn r2, #MinPos_Invaders
+	loadn r3, #MaxPos_Invaders
+	loadn r4, #Dir_Invaders
+
+	LoopAtualizaInvaders:
+		dec r1
+		jz FimAtualizaInvaders
+		loadi r5, r0	
+		loadn r6, #' '	
+		outchar r6, r5	;Apaga invader
+		loadi r7, r4
+		loadn r6, #0
+		cmp r6, r7				;Verifica para onde estava andando
+		jeq MovInv_Esquerda		;Se estava indo para a esquerda, mantém
+		loadn r6, #1
+		jeq MocInv_Direita  	;Se estarava indo para a direita, mantém
+		jmp InvaderMorto
+
+		MovInv_Esquerda:
+			loadi r6, r2
+			cmp r5, r6			;Verifica se esta na posição minima
+			jeq MocInv_Direita 	;Se na posição min, então anda para a direita
+			loadn r7, #0		;Grava a direção para qual esta andando
+			storei r4, r7
+			dec r5				;Calcula nova posição
+			jmp Imprime_Novo
+
+		MocInv_Direita:
+			loadi r6, r3
+			cmp r5, r6 			;Verifica se esta na posição maxima
+			jeq MovInv_Esquerda	;Se esta na posição maxima, então anda para a esquerda
+			loadn r7, #1
+			storei r4, r7		;Armazena a direção para qual vai andar
+			inc r5				;Calcula nova posição
+			jmp Imprime_Novo	
+
+		InvaderMorto:
+
+			inc r0
+			inc r2
+			inc r3
+			inc r4
+
+			jmp LoopAtualizaInvaders
+
+		Imprime_Novo:
+
+			storei r0, r5
+			load r6, Invader
+			outchar r6, r5
+			inc r0
+			inc r2
+			inc r3
+			inc r4
+			;call VerificaTiro_Invader
+			jmp LoopAtualizaInvaders
+
+
+	FimAtualizaInvaders:	
+
+		pop r7
+		pop r6
+		pop r5
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+		rts
+
+;#################################################
+
+VerificaTiro_Invader:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+
+	loadn r0, #FlagTiro_Invaders
+	loadn r2, #21
+	loadn r3, #2
+
+	sub r2, r2, r1
+	add r0, r0, r2
+
+	loadi r4, r0
+
+	cmp r4, r2
+	jeq ZeraFlagTiro
+	inc r4
+	jmp EndVerificaTiro_Invader
+
+	ZeraFlagTiro:
+		loadn r4, #0
+		jmp EndVerificaTiro_Invader
+
+	EndVerificaTiro_Invader:
+
+		storei r0, r4
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+		rts
+
+;#################################################
+
+VerificaFim:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+
+	load r0, PosNova
+	loadn r1, #Pos_Invaders
+	load r2, PosNovaTiro
+	loadn r3, #21
+
+	LoopVerificaFim:
+		dec r3
+		jz FimVerificaFim
+		loadi r4, r1
+		cmp r0, r4
+		call PerdeVida
+		cmp r2, r4
+		call MataInvader
+		inc r1
+		jmp LoopVerificaFim
+
+	FimVerificaFim:
+
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+		rts
+
+;#################################################
+
+PerdeVida:
+
+	push r0
+
+	load r0, Vidas
+	dec r0
+	;jz FimPerdeu
+	store Vidas, r0
+
+	pop r0
+	rts
+
+;#################################################
+
+MataInvader:
+	
+	push r0
+	push r1
+	push r2
+	push r3 
+	push r4
+
+	load r0, QtdInvaders
+	loadn r1, #Dir_Invaders
+	loadn r2, #21
+	sub r2, r2, r3
+	add r1, r1, r2
+	loadn r4, #2
+	storei r1, r4
+
+	dec r0
+	;jz FimGanhou
+	store QtdInvaders, r0
+
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -204,6 +204,8 @@ main:
 	store Contador, r2
 	store ContadorFim, r3
 
+	call PrintInvaders
+
 	LoopMain:
 
 		load r0, Contador
@@ -225,13 +227,16 @@ main:
 
 		;jeq LoopAlien
 
+
+		call AtualizaInvaders
+
 		loadn r1, #2
 		loadn r2, #0
 		mod r1, r0, r1
 		cmp r1, r2
 
 		jeq LoopTiro
-		
+
 		load r0, ContadorFim
 		cmp r0, r3
 
@@ -728,11 +733,11 @@ VerificaFim:
 	LoopVerificaFim:
 		dec r3
 		jz FimVerificaFim
-		loadi r4, r1
+		loadi r4, r1	;Verifica se o Personagem esta na mesma posição de um Invader
 		cmp r0, r4
-		call PerdeVida
-		cmp r2, r4
-		call MataInvader
+		jeq PerdeVida	;Caso esteja, perde uma vida
+		cmp r2, r4		;Verifica se o tiro do personagem atingiu um Invader
+		jeq MataInvader	;Caso esteja, o Invader morre
 		inc r1
 		jmp LoopVerificaFim
 
@@ -751,10 +756,10 @@ PerdeVida:
 
 	push r0
 
-	load r0, Vidas
-	dec r0
-	;jz FimPerdeu
-	store Vidas, r0
+	load r0, Vidas	
+	dec r0			;Decrementa o numero de vidas
+	;jz FimPerdeu	;Caso não hajam mais vidas, o jogo acaba
+	store Vidas, r0	;Armazena a nova quantidade de vidas
 
 	pop r0
 	rts
@@ -772,14 +777,14 @@ MataInvader:
 	load r0, QtdInvaders
 	loadn r1, #Dir_Invaders
 	loadn r2, #21
-	sub r2, r2, r3
-	add r1, r1, r2
-	loadn r4, #2
-	storei r1, r4
+	sub r2, r2, r3			;Encontra o Invader que foi assassinado
+	add r1, r1, r2			;Encontra a posição no vetor do Invader que foi morto
+	loadn r4, #2 	
+	storei r1, r4			;Atualiza a condição do Invader
 
-	dec r0
-	;jz FimGanhou
-	store QtdInvaders, r0
+	dec r0					;Decrementa a quantidade de Invaders vivos
+	;jz FimGanhou			;Caso não hajam mais Invaders vivos, o jogo acaba
+	store QtdInvaders, r0	;Atualiza quantidade de Invaders vivos
 
 	pop r4
 	pop r3

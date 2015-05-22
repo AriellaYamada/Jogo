@@ -100,7 +100,7 @@ strLifes : string "Lifes "
 Invader : var #1
 Charecter : var #1
 
-static Invader + #0, #585
+static Invader + #0, #519
 static Charecter + #0, #1033
 
 Vidas: var #1
@@ -359,6 +359,7 @@ main:
 		load r0, Tecla
 		loadn r1, #255
 		cmp r0, r1
+
 		jeq LoopMain
 
 		call AtualizaTiro
@@ -379,7 +380,6 @@ EstouroContador:
 
 
 ;#################################################
-
 
 Delay:
 	
@@ -422,7 +422,7 @@ PrintStones:
 		jeq Fim_PrintStones
 		loadi r3, r0
 		;Imprime a primeira pos da pedra
-		loadn r4, #7 ;Carrega o "desenho" da pedra
+		loadn r4, #6 ;Carrega o "desenho" da pedra
 		loadn r6, #256 ;Carrega a cor da pedra
 		add r4, r4, r6
 		outchar r4, r3

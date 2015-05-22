@@ -294,7 +294,7 @@ main:
 
 		call VerificaFim
 		call AtualizaInvaders
-		call AtualizaTiroInvaders
+		;call AtualizaTiroInvaders
 
 		loadn r1, #2
 		loadn r2, #0
@@ -715,9 +715,7 @@ AtualizaInvaders:
 		loadn r6, #0
 		cmp r6, r7				;Verifica para onde estava andando
 		jeq MovInv_Esquerda		;Se estava indo para a esquerda, mantém
-		loadn r6, #1
-		jeq MocInv_Direita  	;Se estarava indo para a direita, mantém
-		jmp InvaderMorto
+		jmp MocInv_Direita  	;Se estarava indo para a direita, mantém
 
 		MovInv_Esquerda:
 			loadi r6, r2
@@ -736,15 +734,6 @@ AtualizaInvaders:
 			storei r4, r7		;Armazena a direção para qual vai andar
 			inc r5				;Calcula nova posição
 			jmp Imprime_Novo	
-
-		InvaderMorto:
-
-			inc r0
-			inc r2
-			inc r3
-			inc r4
-
-			jmp LoopAtualizaInvaders
 
 		Imprime_Novo:
 
@@ -805,9 +794,9 @@ VerificaTiro_Invader:
 		loadi r7, r5
 		cmp r7, r6
 		jle EndVerificaTiro_Invader
-		loadn r0, #Pos_Invaders
-		add r0, r0, r2
-		loadi r7, r0
+		loadn r1, #Pos_Invaders
+		add r1, r1, r2
+		loadi r7, r1
 		storei r5, r7
 		jmp EndVerificaTiro_Invader
 

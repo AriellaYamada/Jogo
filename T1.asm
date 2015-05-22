@@ -90,7 +90,7 @@ Tecla: var #1
 
 PosNovaTiro: var #1
 PosAnteriorTiro: var #1
-FlagTiro: var #1
+Flagtiro: var #1
 
 Contador: var #1
 ContadorFim: var #1
@@ -119,6 +119,9 @@ Dir_Invaders : var #20
 FlagTiro_Invaders: var #20
 Tiro_Invaders : var #20
 rand_StonePos : var #10
+
+
+static Flagtiro + #0, #0  
 
 static rand_StonePos + #0, #84
 static rand_StonePos + #1, #146
@@ -287,12 +290,16 @@ main:
 
 	LoopMain:
 
+		call Delay
+		
 		load r0, Contador
 		loadn r1, #65530
 		cmp r0, r1
 		jeq EstouroContador
 
 		call VerificaFim
+		call AtualizaInvaders
+		;call AtualizaTiroInvaders
 
 		loadn r1, #2
 		loadn r2, #0
@@ -313,15 +320,13 @@ main:
 		mod r1, r0, r1
 		cmp r1, r2
 
-		;jeq LoopTiro
+		jeq LoopTiro
 		
 		load r0, ContadorFim
 		cmp r0, r3
 
-		;jeq LoopFim
-
-		call Delay
-
+		jeq LoopFim
+		
 		load r0, Contador
 		inc r0
 
@@ -352,26 +357,18 @@ main:
 
 		call AtualizaInvaders
 
-		call AtualizaTiroInvaders
-
 		jmp LoopMain
 
 	LoopTiro:
 
-		call LeTecla
-
-		load r0, Tecla
-		loadn r1, #255
+		load r0, Flagtiro
+		loadn r1, #0
 		cmp r0, r1
-
 		jeq LoopMain
 
 		call AtualizaTiro
 
-		call PrintTiro
-
 		jmp LoopMain
-
 		
 ;#################################################
 
@@ -459,12 +456,12 @@ PrintPersonagem:
 		push r1
 
 		load r0, PosNova
-		loadn r1, #9
+		load r1, Charecter
 
 		outchar r1, r0
 
 		store PosAnterior, r0
-		;store PosAnteriorTiro, r0
+		store PosAnteriorTiro, r0
 
 		pop r1
 		pop r0
@@ -510,6 +507,10 @@ AtualizaPersonagem:
 	cmp r0, r1
 	jeq MoveLeft
 
+	loadn r1, #' '
+	cmp r0, r1
+	jeq SetFlagTiro
+
 	MoveUP:
 
 		loadn r0, #40
@@ -519,7 +520,6 @@ AtualizaPersonagem:
 		sub r2, r1, r0
 
 		store PosNova, r2
-		store PosAnteriorTiro, r2
 
 		jmp Fim
 
@@ -532,7 +532,6 @@ AtualizaPersonagem:
 		add r2, r1 , r0
 
 		store PosNova, r2
-		store PosAnteriorTiro, r2
 
 		jmp Fim
 
@@ -545,7 +544,6 @@ AtualizaPersonagem:
 		add r2, r1 , r0
 
 		store PosNova, r2
-		store PosAnteriorTiro, r2
 
 		jmp Fim
 
@@ -558,9 +556,14 @@ AtualizaPersonagem:
 		sub r2, r1, r0
 
 		store PosNova, r2
-		store PosAnteriorTiro, r2
 
 		jmp Fim
+
+	SetFlagTiro:
+
+			loadn r0, #1
+			store Flagtiro, r0
+
 		
 	Fim:
 
@@ -586,16 +589,14 @@ LeTecla:
 
 ;#################################################
 
-
 AtualizaTiro:
 	
 	push r0
 	push r1
 	push r2
-	push r3
-
-	load r0, Tecla
-	loadn r1, #'l' 
+	
+	load r0, Flagtiro
+	loadn r1, #1 
 	
 	cmp r0, r1
 	jeq Atirou
@@ -604,53 +605,59 @@ AtualizaTiro:
 
 	Atirou:
 
-		loadn r0, #40
+		loadn r0, #1
 		load r1, PosAnteriorTiro
-		
+		loadn r2, #8
+
 		sub r1, r1, r0
 
-		store PosNovaTiro, r1 
+		jmp LoopTiro
 
-		jmp FimTiro
+	LoopTiro:
+
+		loadn r2, #8
+		outchar r2, r1		
+
+		call DelayTiro
+
+		loadn r2, #' '
+		outchar r2, r0
+		
+		sub r0, r0, r2
+
+		jz FimTiro
+
+		jmp LoopTiro
 
 
 	FimTiro:
 
-		pop r3
-		pop r2
-		pop r1
-		pop r0
-
-
-PrintTiro:
-	
-	push r0
-	push r1
-	push r2
-
-	load r0, FlagTiro
-	loadn r1, #1
-	cmp r0, r1
-
-	jeq Print
-	jmp FimPrintTiro
-
-
-	Print:
-
-		load r0, PosAnteriorTiro	
-		load r1, PosNovaTiro
-		loadn r2, #8
-		
-		outchar r2, r1
-	
-	FimPrintTiro:
+		loadn r0, #0
+		store Flagtiro, r0
 
 		pop r2
 		pop r1
 		pop r0
 
 		rts
+
+DelayTiro:
+
+	push r3
+    push r4
+    
+    loadn r4, #5 
+    
+    delay_volta2:               
+        loadn r3, #100000000
+        delay_volta: 
+            dec r3          
+            jnz delay_volta 
+            dec r4
+            jnz delay_volta2
+   
+    rts
+
 
 ;#################################################
 
@@ -717,7 +724,7 @@ AtualizaInvaders:
 		jeq MovInv_Esquerda		;Se estava indo para a esquerda, mantém
 		loadn r6, #1
 		jeq MocInv_Direita  	;Se estarava indo para a direita, mantém
-		jmp InvaderMorto
+		;jmp InvaderMorto
 
 		MovInv_Esquerda:
 			loadi r6, r2
@@ -770,7 +777,6 @@ AtualizaInvaders:
 		pop r1
 		pop r0
 		rts
-
 ;#################################################
 
 VerificaTiro_Invader:
@@ -788,26 +794,26 @@ VerificaTiro_Invader:
 	loadn r2, #21
 	loadn r3, #2
 	loadn r5, #Tiro_Invaders
-	loadn r6, #1200
+	loadn r6, #1159
 
 	sub r2, r2, r1
 	add r0, r0, r2
 	add r5, r5, r2
 	loadi r4, r0
 
-	cmp r4, r2
-	jeq ZeraFlagTiro
-	inc r4
+	cmp r4, r2			;Contador de todos os invaders
+	jeq ZeraFlagTiro	
+	inc r4				
 	jmp EndVerificaTiro_Invader
 
 	ZeraFlagTiro:
 		loadn r4, #0
 		loadi r7, r5
-		cmp r7, r6
-		jle EndVerificaTiro_Invader
-		loadn r0, #Pos_Invaders
-		add r0, r0, r2
-		loadi r7, r0
+		cmp r7, r6		;Verifica se o tiro já chegou ao final da tela
+		jle EndVerificaTiro_Invader	;Se já chegou não vai fazer nada
+		loadn r1, #Pos_Invaders 	;Se não, vai carregar a posição antiga do tiro
+		add r1, r1, r2				;Incrementa a posição do tiro
+		loadi r7, r1 				
 		storei r5, r7
 		jmp EndVerificaTiro_Invader
 
@@ -839,7 +845,7 @@ AtualizaTiroInvaders:
 	loadn r0, #Tiro_Invaders
 	loadn r1, #21
 	loadn r2, #40
-	loadn r3, #1200
+	loadn r3, #1159
 	load r4, Tiro_Invader
 	loadn r5, #' '
 	dec r0
@@ -851,7 +857,7 @@ AtualizaTiroInvaders:
 		loadi r6, r0
 		cmp r3, r6
 		jeg LoopAtualizaTiroInvaders
-		outchar r4, r6
+		outchar r5, r6
 		add r6, r6, r2
 		outchar r4, r6
 		storei r0, r6

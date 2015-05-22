@@ -293,6 +293,8 @@ main:
 		jeq EstouroContador
 
 		call VerificaFim
+		call AtualizaInvaders
+		call AtualizaTiroInvaders
 
 		loadn r1, #2
 		loadn r2, #0
@@ -318,7 +320,7 @@ main:
 		load r0, ContadorFim
 		cmp r0, r3
 
-		;jeq LoopFim
+		jeq LoopFim
 
 		call Delay
 
@@ -351,8 +353,6 @@ main:
 	LoopAlien:
 
 		call AtualizaInvaders
-
-		call AtualizaTiroInvaders
 
 		jmp LoopMain
 

@@ -32,9 +32,7 @@ tela28 : string "                                        "
 tela29 : string "                                        "
 
 
-Carachter : string "C"
-Weapon : string "->"
-Stone : string "x"
+Charecter : var #1
 Invader : var #1
 Tiro_Invader : string ":"
 Pos_Invaders : var #20
@@ -49,7 +47,7 @@ PosNova : var #1
 Tecla: var #1
 
 static Invader + #0, #585
-
+static Charecter + #0, #1033
 
 static rand_StonePos + #0, #84
 static rand_StonePos + #1, #146
@@ -371,7 +369,7 @@ PrintPersonagem:
 		push r1
 
 		load r0, PosNova
-		loadn r1, #9
+		load r1, Charecter
 
 		outchar r1, r0
 

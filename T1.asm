@@ -459,7 +459,7 @@ PrintPersonagem:
 		push r1
 
 		load r0, PosNova
-		loadn r1, #9
+		load r1, Charecter
 
 		outchar r1, r0
 

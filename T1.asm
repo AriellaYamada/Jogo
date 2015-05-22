@@ -136,6 +136,27 @@ static FlagTiro_Invaders + #17, #0
 static FlagTiro_Invaders + #18, #0
 static FlagTiro_Invaders + #19, #0
 
+static Tiro_Invaders + #0, #1200
+static Tiro_Invaders + #1, #1200
+static Tiro_Invaders + #2, #1200
+static Tiro_Invaders + #3, #1200
+static Tiro_Invaders + #4, #1200
+static Tiro_Invaders + #5, #1200
+static Tiro_Invaders + #6, #1200
+static Tiro_Invaders + #7, #1200
+static Tiro_Invaders + #8, #1200
+static Tiro_Invaders + #9, #1200
+static Tiro_Invaders + #10, #1200
+static Tiro_Invaders + #11, #1200
+static Tiro_Invaders + #12, #1200
+static Tiro_Invaders + #13, #1200
+static Tiro_Invaders + #14, #1200
+static Tiro_Invaders + #15, #1200
+static Tiro_Invaders + #16, #1200
+static Tiro_Invaders + #17, #1200
+static Tiro_Invaders + #18, #1200
+static Tiro_Invaders + #19, #1200
+
 
 ;------------- inicio --------------
 
@@ -154,9 +175,7 @@ main:
 
 		call AtualizaInvaders
 
-		;call Atira_Invader
-
-		;call AtualizaTiro_Invaders
+		call AtualizaTiroInvaders
 
 		call Delay
 
@@ -300,7 +319,7 @@ AtualizaInvaders:
 			inc r2
 			inc r3
 			inc r4
-			;call VerificaTiro_Invader
+			call VerificaTiro_Invader
 			jmp LoopAtualizaInvaders
 
 
@@ -325,14 +344,19 @@ VerificaTiro_Invader:
 	push r2
 	push r3
 	push r4
+	push r5
+	push r6
+	push r7
 
 	loadn r0, #FlagTiro_Invaders
 	loadn r2, #21
 	loadn r3, #2
+	loadn r5, #Tiro_Invaders
+	loadn r6, #1200
 
 	sub r2, r2, r1
 	add r0, r0, r2
-
+	add r5, r5, r2
 	loadi r4, r0
 
 	cmp r4, r2
@@ -342,11 +366,21 @@ VerificaTiro_Invader:
 
 	ZeraFlagTiro:
 		loadn r4, #0
+		loadi r7, r5
+		cmp r7, r6
+		jle EndVerificaTiro_Invader
+		loadn r1, #Pos_Invaders
+		add r1, r1, r2
+		loadi r7, r1
+		storei r5, r7
 		jmp EndVerificaTiro_Invader
 
 	EndVerificaTiro_Invader:
 
 		storei r0, r4
+		pop r7
+		pop r6
+		pop r5
 		pop r4
 		pop r3
 		pop r2
@@ -354,6 +388,49 @@ VerificaTiro_Invader:
 		pop r0
 		rts
 
+;#################################################
+
+AtualizaTiroInvaders:
+
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+
+	loadn r0, #Tiro_Invaders
+	loadn r1, #21
+	loadn r2, #40
+	loadn r3, #1200
+	load r4, Tiro_Invader
+	loadn r5, #' '
+	dec r0
+
+	LoopAtualizaTiroInvaders:
+		inc r0
+		dec r1
+		jz FimLoopAtualizaTiroInvaders
+		loadi r6, r0
+		cmp r3, r6
+		jle LoopAtualizaTiroInvaders
+		outchar r4, r6
+		add r6, r6, r2
+		outchar r4, r6
+		storei r0, r6
+		jmp LoopAtualizaTiroInvaders
+
+	FimLoopAtualizaTiroInvaders:
+
+		pop r6
+		pop r5
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
+		rts
 
 
 ;#################################################

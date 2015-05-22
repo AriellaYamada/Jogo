@@ -1,3 +1,7 @@
+;Alunos:
+;Ariella Yamada Brambila 8937034
+;Lucas Antognoni de Castro 8936951
+
 ;------------- TRABALHO 1 - JOGO --------------
 
 telai0  : string "                                        "
@@ -48,7 +52,7 @@ telaf13 : string "                                        "
 telaf14 : string "        _____                           "
 telaf15 : string "       |     | _ _ ___ ___              "
 telaf16 : string "       |  |  || | | -_|  _|             "
-telaf17 : string "       |_____|\\_/|___|_|               "
+telaf17 : string "       |_____| \\_/|___|_|              "
 telaf18 : string "                                        "
 telaf19 : string "                                        "
 telaf20 : string "                                        "
@@ -291,7 +295,7 @@ main:
 	LoopMain:
 
 		call Delay
-		
+
 		load r0, Contador
 		loadn r1, #65530
 		cmp r0, r1
@@ -326,7 +330,7 @@ main:
 		cmp r0, r3
 
 		jeq LoopFim
-		
+
 		load r0, Contador
 		inc r0
 
@@ -421,13 +425,11 @@ PrintStones:
 
 		cmp r2, r1
 		jeq Fim_PrintStones
-		loadi r3, r0
-		;Imprime a primeira pos da pedra
-		loadn r4, #6 ;Carrega o "desenho" da pedra
-		loadn r6, #256 ;Carrega a cor da pedra
+		loadi r3, r0 	;Imprime a primeira pos da pedra
+		loadn r4, #6 	;Carrega o "desenho" da pedra
+		loadn r6, #256 	;Carrega a cor da pedra
 		add r4, r4, r6
-		outchar r4, r3
-		;Imprime a segunda linha da pedra
+		outchar r4, r3 	;Imprime a segunda linha da pedra
 		add r3, r3, r5
 		outchar r4, r3
 		inc r3
@@ -811,15 +813,23 @@ VerificaTiro_Invader:
 		loadi r7, r5
 		cmp r7, r6		;Verifica se o tiro já chegou ao final da tela
 		jle EndVerificaTiro_Invader	;Se já chegou não vai fazer nada
+<<<<<<< HEAD
 		loadn r1, #Pos_Invaders 	;Se não, vai carregar a posição antiga do tiro
 		add r1, r1, r2				;Incrementa a posição do tiro
 		loadi r7, r1 				
 		storei r5, r7
+=======
+		loadn r1, #Pos_Invaders 	;Se não, vai carregar a posição do invader
+		add r1, r1, r2				;Encontra a posição do invader que atirou
+		loadi r7, r1 				
+		storei r5, r7				;Carrega na posição do tiro
+		loadn r4, #1 				;Atualiza a condição do tiro
+>>>>>>> master
 		jmp EndVerificaTiro_Invader
 
 	EndVerificaTiro_Invader:
 
-		storei r0, r4
+		storei r0, r4				;Atualiza a condição do tiro
 		pop r7
 		pop r6
 		pop r5
@@ -852,7 +862,7 @@ AtualizaTiroInvaders:
 
 	LoopAtualizaTiroInvaders:
 		inc r0
-		dec r1
+		dec r1 		;Decrementa o contador de Invaders
 		jz FimLoopAtualizaTiroInvaders
 		loadi r6, r0
 		cmp r3, r6
@@ -861,6 +871,13 @@ AtualizaTiroInvaders:
 		add r6, r6, r2
 		outchar r4, r6
 		storei r0, r6
+		loadi r6, r0 	;Carrega a posicao do tiro do Invader
+		cmp r3, r6 		;Verifica se o tiro já foi para o fim da tela
+		jeg FimLoopAtualizaTiroInvaders 	;Se sim, não imprime o tiro
+		outchar r5, r6 	;Se não, apaga o tiro
+		add r6, r6, r2	;Incremeta a posição do tiro
+		outchar r4, r6 	;Imprime o novo tiro
+		storei r0, r6 	;Armazena a nova posição do tiro
 		jmp LoopAtualizaTiroInvaders
 
 	FimLoopAtualizaTiroInvaders:
@@ -939,9 +956,8 @@ MataInvader:
 	loadn r2, #21
 	sub r2, r2, r3			;Encontra o Invader que foi assassinado
 	add r1, r1, r2			;Encontra a posição no vetor do Invader que foi morto
-	loadn r4, #2 	
+	loadn r4, #2 			
 	storei r1, r4			;Atualiza a condição do Invader
-
 	dec r0					;Decrementa a quantidade de Invaders vivos
 	jz FimGanhou			;Caso não hajam mais Invaders vivos, o jogo acaba
 	store QtdInvaders, r0	;Atualiza quantidade de Invaders vivos

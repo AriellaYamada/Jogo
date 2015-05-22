@@ -414,7 +414,7 @@ AtualizaTiroInvaders:
 		jz FimLoopAtualizaTiroInvaders
 		loadi r6, r0
 		cmp r3, r6
-		jle LoopAtualizaTiroInvaders
+		jgr LoopAtualizaTiroInvaders
 		outchar r4, r6
 		add r6, r6, r2
 		outchar r4, r6

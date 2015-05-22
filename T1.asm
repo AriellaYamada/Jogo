@@ -948,11 +948,33 @@ MataInvader:
 
 FimGanhou:
 
+	push r0
+	push r1
+
+	loadn r0, #0
+	loadn r1, #telai0
+
+	call ImprimeTela
+
+	pop r1
+	pop r0
+
 	halt
 
 ;#################################################
 
 FimPerdeu:
+
+	push r0
+	push r1
+
+	loadn r0, #0
+	loadn r1, #telaf0
+
+	call ImprimeTela
+
+	pop r1
+	pop r0
 
 	halt
 
@@ -984,3 +1006,69 @@ SaiLoop:
 	pop r1
 	pop r0
 	rts
+
+;#################################################
+
+ApagaTela:
+
+	push r0
+	push r1
+
+	loadn r0, #1199
+	loadn r1, #' '
+
+LoopApagarTela:
+
+	outchar r1, r0
+	dec r0
+	jnz LoopApagarTela
+	outchar r1, r0
+		
+	pop r1	
+	pop r0
+
+	rts
+
+;#################################################
+
+ImprimeTela:					
+	
+	call ApagaTela
+	push r0				
+	push r1
+	push r2
+	push r3				
+	push r4			
+	push r5 
+	
+	loadn r3, #1199
+	loadn r5, #'\0'
+
+LoopImprime:	
+	
+	loadi r4, r1
+	cmp r4, r3
+	jeg SaiImprime
+	cmp r4, r5
+	jeq IncR1	
+	outchar r4, r0
+	inc r0
+	inc r1
+	jmp LoopImprime
+
+IncR1:
+
+	inc r1
+	jmp LoopImprime
+
+
+SaiImprime:	
+
+	pop r5
+	pop r4				
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+
+	rts	

@@ -371,7 +371,7 @@ AtualizaTiro:
 	
 	cmp r0, r1
 	jeq Atirou
-	jmp Fimtiro
+	jmp FimTiro
 
 
 	Atirou:
@@ -384,17 +384,6 @@ AtualizaTiro:
 		store PosNovaTiro, r1 
 
 		jmp FimTiro
-
-
-	FimFlagTiro:
-
-		loadn r0, #0
-		store FlagTiro, r0
-		load r1, PosNovaTiro
-		loadn r0, #' '
-		outchar r0, r1
-
-		Jmp FimTiro
 
 
 	FimTiro:

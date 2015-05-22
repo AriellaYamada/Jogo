@@ -287,6 +287,8 @@ main:
 
 	LoopMain:
 
+		call Delay
+		
 		load r0, Contador
 		loadn r1, #65530
 		cmp r0, r1
@@ -322,7 +324,7 @@ main:
 
 		jeq LoopFim
 
-		call Delay
+		
 
 		load r0, Contador
 		inc r0
@@ -464,7 +466,7 @@ PrintPersonagem:
 		outchar r1, r0
 
 		store PosAnterior, r0
-		;store PosAnteriorTiro, r0
+		store PosAnteriorTiro, r0
 
 		pop r1
 		pop r0
@@ -715,7 +717,9 @@ AtualizaInvaders:
 		loadn r6, #0
 		cmp r6, r7				;Verifica para onde estava andando
 		jeq MovInv_Esquerda		;Se estava indo para a esquerda, mantém
-		jmp MocInv_Direita  	;Se estarava indo para a direita, mantém
+		loadn r6, #1
+		jeq MocInv_Direita  	;Se estarava indo para a direita, mantém
+		;jmp InvaderMorto
 
 		MovInv_Esquerda:
 			loadi r6, r2
@@ -734,6 +738,15 @@ AtualizaInvaders:
 			storei r4, r7		;Armazena a direção para qual vai andar
 			inc r5				;Calcula nova posição
 			jmp Imprime_Novo	
+
+		InvaderMorto:
+
+			inc r0
+			inc r2
+			inc r3
+			inc r4
+
+			jmp LoopAtualizaInvaders
 
 		Imprime_Novo:
 
@@ -759,7 +772,6 @@ AtualizaInvaders:
 		pop r1
 		pop r0
 		rts
-
 ;#################################################
 
 VerificaTiro_Invader:
@@ -777,26 +789,26 @@ VerificaTiro_Invader:
 	loadn r2, #21
 	loadn r3, #2
 	loadn r5, #Tiro_Invaders
-	loadn r6, #1200
+	loadn r6, #1159
 
 	sub r2, r2, r1
 	add r0, r0, r2
 	add r5, r5, r2
 	loadi r4, r0
 
-	cmp r4, r2
-	jeq ZeraFlagTiro
-	inc r4
+	cmp r4, r2			;Contador de todos os invaders
+	jeq ZeraFlagTiro	
+	inc r4				
 	jmp EndVerificaTiro_Invader
 
 	ZeraFlagTiro:
 		loadn r4, #0
 		loadi r7, r5
-		cmp r7, r6
-		jle EndVerificaTiro_Invader
-		loadn r1, #Pos_Invaders
-		add r1, r1, r2
-		loadi r7, r1
+		cmp r7, r6		;Verifica se o tiro já chegou ao final da tela
+		jle EndVerificaTiro_Invader	;Se já chegou não vai fazer nada
+		loadn r1, #Pos_Invaders 	;Se não, vai carregar a posição antiga do tiro
+		add r1, r1, r2				;Incrementa a posição do tiro
+		loadi r7, r1 				
 		storei r5, r7
 		jmp EndVerificaTiro_Invader
 
@@ -828,7 +840,7 @@ AtualizaTiroInvaders:
 	loadn r0, #Tiro_Invaders
 	loadn r1, #21
 	loadn r2, #40
-	loadn r3, #1200
+	loadn r3, #1159
 	load r4, Tiro_Invader
 	loadn r5, #' '
 	dec r0
@@ -840,7 +852,7 @@ AtualizaTiroInvaders:
 		loadi r6, r0
 		cmp r3, r6
 		jeg LoopAtualizaTiroInvaders
-		outchar r4, r6
+		outchar r5, r6
 		add r6, r6, r2
 		outchar r4, r6
 		storei r0, r6

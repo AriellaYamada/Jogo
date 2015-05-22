@@ -46,6 +46,8 @@ PosAnterior : var #1
 PosNova : var #1
 Tecla: var #1
 
+strLifes : string "Lifes "
+
 static Invader + #0, #585
 static Charecter + #0, #1033
 
@@ -194,6 +196,14 @@ static Vidas + #0, #3
 
 main:
 	
+	loadn r0, #0
+	loadn r1, #strLifes
+	call ImprimeString
+	loadn r0, #6
+	load r1, Vidas
+	loadn r2, #1328
+	add r2, r2, r1
+	outchar r2, r0
 	
 	loadn r0, #1140
 	loadn r1, #9
@@ -217,34 +227,21 @@ main:
 		cmp r0, r1
 		jeq EstouroContador
 
+		call LeTecla
+
+		call ApagaPersonagem
+
+		call AtualizaPersonagem
+
+		call PrintPersonagem
+
+		call VerificaFim
+
 		call AtualizaInvaders
 
-		loadn r1, #10
-		loadn r2, #0
-		mod r1, r0, r1
-		cmp r1, r2
+		call AtualizaTiro
 
-		jeq LoopPersonagem
-
-		;loadn r1, #5
-		;loadn r2, #0
-		;mod r1, r0, r1
-		;cmp r1, r2
-
-		;jeq LoopAlien
-
-
-		loadn r1, #2
-		loadn r2, #0
-		mod r1, r0, r1
-		cmp r1, r2
-
-		jeq LoopTiro
-
-		load r0, ContadorFim
-		cmp r0, r3
-
-		;jeq LoopFim
+		call PrintTiro
 
 		call Delay
 
@@ -271,7 +268,10 @@ main:
 
 		jmp LoopMain
 
-	;LoopAlien:
+	LoopAlien:
+
+		call AtualizaInvaders
+		jmp LoopMain
 
 	LoopTiro:
 
@@ -863,6 +863,34 @@ FimPerdeu:
 
 	halt
 
+;#################################################
+
+ImprimeString:
+	
+	push r0
+	push r1
+	push r2  
+	push r3  
+
+	loadn r2, #'\0'
+
+LoopPercorre:
+	
+	loadi r3, r1  
+	cmp r3, r2  		
+	jeq SaiLoop  
+	outchar r3, r0	
+	inc r0
+	inc r1
+	jmp LoopPercorre
+
+SaiLoop:
+	
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
 
 
 

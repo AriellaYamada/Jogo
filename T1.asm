@@ -1,42 +1,57 @@
 ;------------- TRABALHO 1 - JOGO --------------
 
-tela0  : string "                                        "
-tela1  : string "                           x            "
-tela2  : string "      x                   xxx           "
-tela3  : string "     xxx                                "
-tela4  : string "                   x                    "
-tela5  : string "                  xxx                   "
-tela6  : string "                                        "
-tela7  : string "                                        "
-tela8  : string "            x                           "
-tela9  : string "           xxx                          "
-tela10 : string "                             x          "
-tela11 : string "                            xxx         "
-tela12 : string "                                        "
-tela13 : string "                   x                    "
-tela14 : string "                  xxx                   "
-tela15 : string "     x                                  "
-tela16 : string "    xxx                           x     "
-tela17 : string "                                 xxx    "
-tela18 : string "                                        "
-tela19 : string "                                        "
-tela20 : string "                                        "
-tela21 : string " ====================================== "
-tela22 : string "                                        "
-tela23 : string "                                        "
-tela24 : string "                                        "
-tela25 : string "                                        "
-tela26 : string "                                        "
-tela27 : string "                                        "
-tela28 : string "                                        "
-tela29 : string "                                        "
+telai0  : string "                                        "
+telai1  : string "                                        "
+telai2  : string "                                        "
+telai3  : string "                                        "
+telai4  : string "                                        "
+telai5  : string "                                        "
+telai6  : string "                                        "
+telai7  : string "                                        "
+telai8  : string "     _____         _   _                                             "
+telai9  : string "    |  |  |_ _ ___| |_|_|                                   "
+telai10 : string "    |     | | |   |  _| |   | . |                                    "
+telai11 : string "    |__|__|___|_|_|_| |_|_|_|_  |                                    "
+telai12 : string "                            |___|            "
+telai13 : string "                                        "
+telai14 : string "                                        "
+telai15 : string "                                        "
+telai16 : string "                                        "
+telai17 : string "                                        "
+telai18 : string "                                        "
+telai19 : string "                                        "
+telai20 : string "                                        "
+telai21 : string "                                        "
+telai22 : string "                                        "
+telai23 : string "                                        "
+telai24 : string "                                        "
+telai25 : string "                                        "
+telai26 : string "                                        "
+telai27 : string "                                        "
+telai28 : string "                                        "
+telai29 : string "                                        "
 
-
+                                                      
+; _____         _   _                        
+;|  |  |_ _ ___| |_|_|___ ___   
+;|     | | |   |  _| |   | . |  
+;|__|__|___|_|_|_| |_|_|_|_  |  
+;                        |___|                         
+                                                      
+; _____ _ _             
+;|  _  | |_|___ ___ ___ 
+;|     | | | -_|   |_ -|
+;|__|__|_|_|___|_|_|___|
+                                          
+; _____                  _____             
+;|   __|___ _____ ___   |     |_ _ ___ ___ 
+;|  |  | .'|     | -_|  |  |  | | | -_|  _|
+;|_____|__,|_|_|_|___|  |_____|\_/|___|_|  
+                    
 
 jmp main
 
 ;------------- variaveis --------------
-
 
 PosAnterior : var #1
 PosNova : var #1
@@ -49,8 +64,6 @@ FlagTiro: var #1
 
 Contador: var #1
 ContadorFim: var #1
-
-
 
 ;------------- inicio --------------
 
@@ -76,12 +89,12 @@ main:
 		cmp r0, r1
 		jeq EstouroContador
 
-		loadn r1, #10
-		loadn r2, #0
-		mod r1, r0, r1
-		cmp r1, r2
+		;loadn r1, #10
+		;loadn r2, #0
+		;mod r1, r0, r1
+		;cmp r1, r2
 
-		jeq LoopPersonagem
+		;jeq LoopPersonagem
 
 		;loadn r1, #5
 		;loadn r2, #0
@@ -117,6 +130,11 @@ main:
 
 		call LeTecla
 
+		load r0, Tecla
+		loadn r1, #255
+		cmp r0, r1
+		jeq LoopMain
+
 		call ApagaPersonagem
 
 		call AtualizaPersonagem
@@ -128,6 +146,13 @@ main:
 	;LoopAlien:
 
 	LoopTiro:
+
+		call LeTecla
+
+		load r0, Tecla
+		loadn r1, #255
+		cmp r0, r1
+		jeq LoopMain
 
 		call AtualizaTiro
 
@@ -226,10 +251,6 @@ AtualizaPersonagem:
 	cmp r0, r1
 	jeq MoveLeft
 
-	loadn r1, #'l'
-	cmp r0, r1
-	jeq Atirou1
-
 	MoveUP:
 
 		loadn r0, #40
@@ -239,6 +260,7 @@ AtualizaPersonagem:
 		sub r2, r1, r0
 
 		store PosNova, r2
+		store PosAnteriorTiro, r2
 
 		jmp Fim
 
@@ -251,6 +273,7 @@ AtualizaPersonagem:
 		add r2, r1 , r0
 
 		store PosNova, r2
+		store PosAnteriorTiro, r2
 
 		jmp Fim
 
@@ -263,6 +286,7 @@ AtualizaPersonagem:
 		add r2, r1 , r0
 
 		store PosNova, r2
+		store PosAnteriorTiro, r2
 
 		jmp Fim
 
@@ -275,14 +299,10 @@ AtualizaPersonagem:
 		sub r2, r1, r0
 
 		store PosNova, r2
+		store PosAnteriorTiro, r2
 
 		jmp Fim
-
-	Atirou1:
-
-		loadn r0, #1
-		store FlagTiro, r0 
-
+		
 	Fim:
 
 		pop r2
@@ -296,24 +316,14 @@ AtualizaPersonagem:
 LeTecla:
 
 	push r0
-	push r1
+	
+	inchar r0
 
-	LoopLeTecla:
+	store Tecla, r0
 
-		loadn r1, #255
+	pop r0
 
-		inchar r0
-
-		cmp r0, r1
-		
-		jeq LoopLeTecla
-
-		store Tecla, r0
-
-		pop r0
-		pop r1
-
-		rts
+	rts
 
 ;#################################################
 
@@ -325,43 +335,22 @@ AtualizaTiro:
 	push r2
 	push r3
 
-	load r0, FlagTiro
-	loadn r1, #1
-	cmp r0 , r1
+	load r0, Tecla
+	loadn r1, #'l' 
+	
+	cmp r0, r1
 	jeq Atirou
-	jmp NAtirou
+	jmp Fimtiro
 
 
 	Atirou:
 
 		loadn r0, #40
 		load r1, PosAnteriorTiro
-		loadn r2, #38
 		
-		mod r3, r1, r0
-		cmp r3, r5
-		jeq FimFlagTiro
-		
-		sub r1, r1, r0
-
-		store PosAnteriorTiro, r1
-
 		sub r1, r1, r0
 
 		store PosNovaTiro, r1 
-
-		jmp FimTiro
-
-
-	NAtirou:
-
-		loadn r0, #40
-		load r1, PosNovaTiro
-
-		sub r1, r1, r0
-
-		store PosNovaTiro, r1
-		store PosAnteriorTiro, r1
 
 		jmp FimTiro
 
@@ -401,13 +390,11 @@ PrintTiro:
 
 	Print:
 
-
 		load r0, PosAnteriorTiro	
 		load r1, PosNovaTiro
 		loadn r2, #8
 		
 		outchar r2, r1
-
 	
 	FimPrintTiro:
 

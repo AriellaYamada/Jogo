@@ -95,6 +95,8 @@ FlagTiro: var #1
 Contador: var #1
 ContadorFim: var #1
 
+static Contador + #0, #0
+
 strLifes : string "Lifes "
 
 Invader : var #1
@@ -292,21 +294,21 @@ main:
 
 		call VerificaFim
 
-		loadn r1, #10
+		loadn r1, #2
 		loadn r2, #0
 		mod r1, r0, r1
 		cmp r1, r2
 
 		jeq LoopPersonagem
 
-		loadn r1, #5
+		loadn r1, #3
 		loadn r2, #0
 		mod r1, r0, r1
 		cmp r1, r2
 
 		jeq LoopAlien
 
-		loadn r1, #2
+		loadn r1, #5
 		loadn r2, #0
 		mod r1, r0, r1
 		cmp r1, r2
@@ -349,6 +351,8 @@ main:
 	LoopAlien:
 
 		call AtualizaInvaders
+
+		call AtualizaTiroInvaders
 
 		jmp LoopMain
 

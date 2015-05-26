@@ -321,7 +321,7 @@ main:
 		mod r1, r0, r1
 		cmp r1, r2
 
-		;jeq LoopTiro
+		jeq LoopTiro
 		
 		load r0, ContadorFim
 		cmp r0, r3
@@ -354,13 +354,20 @@ main:
 
 		call PrintPersonagem
 
+		inc r0
+
 		jmp LoopMain
+
+		
 
 	LoopAlien:
 
 		call AtualizaInvaders
 
+		inc r0
+
 		jmp LoopMain
+
 
 	LoopTiro:
 
@@ -376,7 +383,11 @@ main:
 
 		call PrintTiro
 
+		inc r0
+
 		jmp LoopMain
+
+
 
 		
 ;#################################################
